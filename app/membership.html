@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Membership - INT216D CarWash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button
+          id="menu-toggle-btn"
+          class="menu-toggle-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="main-nav-links"
+          aria-label="Open menu"
+        >
+          Menu
+        </button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./index.html#services" class="nav-link">Services</a>
+          <a href="./index.html#experience" class="nav-link">The Fleet</a>
+          <a href="./membership.html" class="nav-link">Membership</a>
+          <a href="./index.html#addons" class="nav-link">Pricing</a>
+          <a href="./index.html#booking" class="nav-link">Book Now</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">
+          Light
+        </button>
+        <a href="./index.html#booking" id="login-btn" class="pill-btn login-btn">Login</a>
+      </nav>
+
+      <section id="hero" class="hero-section">
+        <div id="hero-three" class="hero-bg"></div>
+        <div class="hero-content">
+          <div id="hero-title" class="hero-title">
+            <div class="line-wrap"><h1 class="hero-line">Exclusive</h1></div>
+            <div class="line-wrap"><h1 class="hero-line accent">Membership</h1></div>
+            <div class="line-wrap"><h1 class="hero-line">Plans</h1></div>
+          </div>
+          <p id="hero-subtitle" class="hero-subtitle">Unlimited access to premium automotive care</p>
+          <a id="hero-cta" href="#membership-plans" class="hero-cta">View Plans</a>
+        </div>
+      </section>
+
+      <section id="membership-intro" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Member Benefits</p>
+            <h2>Why Join Our Community</h2>
+          </div>
+
+          <div class="benefits-grid">
+            <div class="benefit-item">
+              <h3>Unlimited Washes</h3>
+              <p>Wash your car as often as you want with unlimited monthly visits</p>
+            </div>
+            <div class="benefit-item">
+              <h3>Priority Scheduling</h3>
+              <p>Book your preferred time slot before non-members</p>
+            </div>
+            <div class="benefit-item">
+              <h3>Exclusive Discounts</h3>
+              <p>Special rates on premium services and add-ons</p>
+            </div>
+            <div class="benefit-item">
+              <h3>VIP Support</h3>
+              <p>Dedicated customer service and premium experience</p>
+            </div>
+            <div class="benefit-item">
+              <h3>Member Events</h3>
+              <p>Exclusive access to special events and promotions</p>
+            </div>
+            <div class="benefit-item">
+              <h3>Rewards Program</h3>
+              <p>Earn points with every service and redeem for rewards</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="membership-plans" class="section membership-section">
+        <canvas id="beam-canvas" class="beam-canvas"></canvas>
+        <div class="container membership-content">
+          <div class="section-header" style="text-align: center; margin-bottom: 48px;">
+            <p class="eyebrow">Pricing Plans</p>
+            <h2>Choose Your Level</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto;">
+            <!-- Basic Plan -->
+            <div class="membership-card">
+              <h3 class="card-title">Basic</h3>
+              <p class="card-desc">Perfect for occasional wash needs</p>
+              <div class="price-row">
+                <div class="price-main">R499</div>
+                <div class="price-month">/month</div>
+              </div>
+              <ul class="feature-list">
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>4 washes per month</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Standard wash package</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Member pricing on extras</span>
+                </li>
+              </ul>
+              <a href="./index.html#booking" class="pill-btn join-btn">Get Started</a>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="membership-card" style="border: 1px solid var(--accent); box-shadow: 0 12px 40px rgba(18, 179, 166, 0.15);">
+              <p style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--surface-strong-text); padding: 4px 16px; border-radius: 100px; font-size: 12px; font-weight: 600;">MOST POPULAR</p>
+              <h3 class="card-title">Pro</h3>
+              <p class="card-desc">Our most popular membership option</p>
+              <div class="price-row">
+                <div class="price-main">R999</div>
+                <div class="price-month">/month</div>
+              </div>
+              <ul class="feature-list">
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Unlimited washes</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Priority scheduling</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Free interior vacuum</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>20% discount on services</span>
+                </li>
+              </ul>
+              <a href="./index.html#booking" class="pill-btn join-btn">Join Pro</a>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="membership-card">
+              <h3 class="card-title">Premium</h3>
+              <p class="card-desc">The ultimate automotive care experience</p>
+              <div class="price-row">
+                <div class="price-main">R1,599</div>
+                <div class="price-month">/month</div>
+              </div>
+              <ul class="feature-list">
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Everything in Pro</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Monthly interior detail</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Quarterly ceramic refresh</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>30% discount on all services</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>VIP concierge support</span>
+                </li>
+              </ul>
+              <a href="./index.html#booking" class="pill-btn join-btn">Get Premium</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="comparison" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Plan Comparison</p>
+            <h2>Find Your Perfect Plan</h2>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <th style="text-align: left; padding: 16px; font-weight: 500;">Feature</th>
+                  <th style="text-align: center; padding: 16px; font-weight: 500;">Basic</th>
+                  <th style="text-align: center; padding: 16px; font-weight: 500;">Pro</th>
+                  <th style="text-align: center; padding: 16px; font-weight: 500;">Premium</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <td style="padding: 16px;">Monthly Washes</td>
+                  <td style="text-align: center; padding: 16px;">4</td>
+                  <td style="text-align: center; padding: 16px;">Unlimited</td>
+                  <td style="text-align: center; padding: 16px;">Unlimited</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <td style="padding: 16px;">Interior Vacuum</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                  <td style="text-align: center; padding: 16px;">Free</td>
+                  <td style="text-align: center; padding: 16px;">Free</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <td style="padding: 16px;">Interior Detail</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                  <td style="text-align: center; padding: 16px;">Monthly</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <td style="padding: 16px;">Service Discount</td>
+                  <td style="text-align: center; padding: 16px;">10%</td>
+                  <td style="text-align: center; padding: 16px;">20%</td>
+                  <td style="text-align: center; padding: 16px;">30%</td>
+                </tr>
+                <tr>
+                  <td style="padding: 16px;">Priority Support</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                  <td style="text-align: center; padding: 16px;">✓</td>
+                  <td style="text-align: center; padding: 16px;">✓</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Frequently Asked</p>
+            <h2>Membership FAQ</h2>
+          </div>
+
+          <div style="max-width: 800px; margin: 0 auto;">
+            <div style="margin-bottom: 32px; padding: 24px; background: var(--panel); border-radius: 12px;">
+              <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 500;">Can I cancel anytime?</h3>
+              <p style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">Yes, there are no long-term contracts. Cancel your membership anytime with 7 days notice.</p>
+            </div>
+
+            <div style="margin-bottom: 32px; padding: 24px; background: var(--panel); border-radius: 12px;">
+              <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 500;">Do you offer corporate memberships?</h3>
+              <p style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">Yes! We offer special corporate rates for companies with 5+ vehicles. Contact us for details.</p>
+            </div>
+
+            <div style="margin-bottom: 32px; padding: 24px; background: var(--panel); border-radius: 12px;">
+              <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 500;">Can I pause my membership?</h3>
+              <p style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">Absolutely. You can pause your membership for up to 3 months per year.</p>
+            </div>
+
+            <div style="padding: 24px; background: var(--panel); border-radius: 12px;">
+              <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 500;">What payment methods do you accept?</h3>
+              <p style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">We accept all major credit cards, PayPal, and mobile payment options.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Member Stories</p>
+            <h2>Why Members Love Us</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1100px;">
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <div style="display: flex; gap: 4px; margin-bottom: 16px;">
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+              </div>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                "As a Pro member, unlimited washes have made keeping my car pristine effortless. The priority booking is a lifesaver!"
+              </p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500;">Marcus T.</p>
+              <p style="margin: 4px 0 0; color: var(--accent); font-size: 12px;">Pro Member • 8 months</p>
+            </div>
+
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <div style="display: flex; gap: 4px; margin-bottom: 16px;">
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+              </div>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                "Premium membership worth every penny! The monthly details and concierge support make it a no-brainer investment."
+              </p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500;">Lisa R.</p>
+              <p style="margin: 4px 0 0; color: var(--accent); font-size: 12px;">Premium Member • 1 year</p>
+            </div>
+
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <div style="display: flex; gap: 4px; margin-bottom: 16px;">
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+                <span style="color: var(--accent);">★</span>
+              </div>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                "Switched from Basic to Pro and saved so much money. The service quality is consistent every single time."
+              </p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500;">David N.</p>
+              <p style="margin: 4px 0 0; color: var(--accent); font-size: 12px;">Pro Member • 5 months</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="section booking-section">
+        <div class="booking-gradient"></div>
+        <div class="container booking-content">
+          <h2>Ready to Join?</h2>
+          <p class="desc">Start your membership today and enjoy unlimited automotive care</p>
+          <div class="booking-btn-row">
+            <a href="./index.html#booking" class="pill-btn btn-primary">Join Now</a>
+            <a href="./services.html" class="pill-btn btn-outline">View Services</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="footer" class="footer-section">
+        <div class="iridescent-wrap">
+          <canvas id="iridescent-canvas"></canvas>
+        </div>
+        <div class="container footer-content">
+          <div class="footer-grid">
+            <div class="footer-col wide">
+              <h3 class="footer-brand">INT216D</h3>
+              <p class="footer-blurb">Premium automotive care for the discerning vehicle owner.</p>
+              <div class="inline-links">
+                <a href="#" class="footer-link">Facebook</a>
+                <a href="#" class="footer-link">Instagram</a>
+                <a href="#" class="footer-link">Twitter</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Quick Links</h4>
+              <div class="footer-col-list">
+                <a href="./index.html" class="footer-text-link">Home</a>
+                <a href="./services.html" class="footer-text-link">Services</a>
+                <a href="./membership.html" class="footer-text-link is-active">Membership</a>
+                <a href="./index.html#booking" class="footer-text-link">Book Now</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Contact</h4>
+              <div class="footer-col-list">
+                <p class="footer-link" style="cursor: default; margin: 0;">+27 11 555 1234</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">info@int216d.co.za</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">Open 8AM - 6PM</p>
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p class="footer-copy">&copy; 2024 INT216D CarWash. All rights reserved.</p>
+            <div class="footer-bottom-links">
+              <a href="#" class="footer-text-link">Privacy Policy</a>
+              <a href="#" class="footer-text-link">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./script-pages.js"></script>
+  </body>
+</html>
