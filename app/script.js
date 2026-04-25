@@ -355,8 +355,8 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.m
       <h2>Book Your Premium Wash Today</h2>
       <p class="desc">Choose between our mobile service that comes to you, or visit our state-of-the-art bay facility. Either way, your vehicle receives the INT216D premium treatment.</p>
       <div class="booking-btn-row">
-        <button class="btn-primary" id="book-mobile-btn" data-action="book-mobile">Book Mobile Wash</button>
-        <button class="btn-outline" id="book-bay-btn" data-action="book-bay">Book Bay Wash</button>
+        <a class="btn-primary" id="book-mobile-btn" data-action="book-mobile" href="./book-mobile-wash.html">Book Mobile Wash</a>
+        <a class="btn-outline" id="book-bay-btn" data-action="book-bay" href="./book-bay-wash.html">Book Bay Wash</a>
       </div>
       <div class="steps-grid">
         ${bookingSteps
