@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+staged_files=$(git diff --cached --name-only --diff-filter=ACM)
+if [[ -z "${staged_files}" ]]; then
+  exit 0
+fi
+
+pattern='(ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----|\b[A-Z0-9_]*(API[_-]?KEY|SECRET|TOKEN)\b\s*[:=]\s*["'"'"'][^"'"'"'\n\r]{12,}["'"'"'])'
+
+# Safe placeholders allowed in templates and docs.
+allow_placeholder='(CHANGE_ME|YOUR_|<REPLACE|example|localhost|^\+\s*#|^\+\s*$)'
+
+violations=0
+while IFS= read -r file; do
+  [[ -z "$file" ]] && continue
+
+  if [[ "$file" == *.env.example || "$file" == *SECURITY-COMMIT-GUARD.md ]]; then
+    continue
+  fi
+
+  added_lines=$(git diff --cached -- "$file" | grep '^+' | grep -v '^+++' || true)
+  filtered_lines=$(printf '%s\n' "$added_lines" | grep -E -iv "$allow_placeholder" || true)
+
+  if printf '%s\n' "$filtered_lines" | grep -E -i "$pattern" >/dev/null 2>&1; then
+    echo "[secret-check] Potential secret detected in staged file: $file"
+    violations=1
+  fi
+done <<< "$staged_files"
+
+if [[ $violations -ne 0 ]]; then
+  echo "[secret-check] Commit blocked due to potential secrets in staged changes."
+  exit 1
+fi
+
+exit 0

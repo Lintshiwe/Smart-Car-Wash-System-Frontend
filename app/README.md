@@ -42,3 +42,18 @@ You can also emit manually:
 ```js
 window.INT216D.emitAction("book-mobile", { source: "external" })
 ```
+
+## Live API Wiring
+
+The frontend pages now call the backend API gateway at:
+
+- Default: `http://localhost:8080`
+- Override by setting localStorage key: `int216d:apiBase`
+
+Currently wired:
+
+- Login + register from the page-level login button
+- Membership plans loaded from `GET /api/v1/membership/plans/active`
+- Membership subscription via `POST /api/v1/membership/subscribe` (requires login)
+- Booking forms submit to `POST /api/v1/bookings`
+- Booking slots can be queried from `GET /api/v1/bookings/slots`
