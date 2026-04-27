@@ -1,0 +1,26 @@
+# Environment and local configuration
+.env
+.env.*
+!.env.example
+*.local
+
+# Secrets and key material
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+id_rsa
+id_rsa.pub
+secrets/
+credentials/
+
+# Build/output
+dist/
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

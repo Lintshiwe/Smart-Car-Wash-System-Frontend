@@ -6,7 +6,7 @@ if [[ -z "${staged_files}" ]]; then
   exit 0
 fi
 
-pattern='(ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----|API[_-]?KEY\s*[:=]\s*[^\n\r]+|TOKEN\s*[:=]\s*[^\n\r]+|SECRET\s*[:=]\s*[^\n\r]+)'
+pattern='(ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----|\b[A-Z0-9_]*(API[_-]?KEY|SECRET|TOKEN)\b\s*[:=]\s*["'"'"'][^"'"'"'\n\r]{12,}["'"'"'])'
 
 # Safe placeholders allowed in templates and docs.
 allow_placeholder='(CHANGE_ME|YOUR_|<REPLACE|example|localhost|^\+\s*#|^\+\s*$)'

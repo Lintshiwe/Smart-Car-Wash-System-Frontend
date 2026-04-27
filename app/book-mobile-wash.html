@@ -60,7 +60,7 @@
           </div>
 
           <div style="max-width: 700px; margin: 0 auto;">
-            <form style="display: grid; gap: 28px;">
+            <form id="mobile-booking-form" style="display: grid; gap: 28px;">
               <!-- Step 1: Service Selection -->
               <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
                 <h3 style="margin: 0 0 20px; font-size: 18px; font-weight: 600;">Select Service</h3>
@@ -97,17 +97,17 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                   <div>
                     <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Full Name</label>
-                    <input type="text" placeholder="Your name" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                    <input name="fullName" type="text" placeholder="Your name" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
                   </div>
                   <div>
                     <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Email</label>
-                    <input type="email" placeholder="your@email.com" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                    <input name="email" type="email" placeholder="your@email.com" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
                   </div>
                 </div>
 
                 <div>
                   <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Phone Number</label>
-                  <input type="tel" placeholder="+27 11 555 1234" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                  <input name="phone" type="tel" placeholder="+27 11 555 1234" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
                 </div>
               </div>
 
@@ -118,17 +118,17 @@
                 <div style="display: grid; gap: 16px;">
                   <div>
                     <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Service Address</label>
-                    <input type="text" placeholder="Street address where we'll service your car" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                    <input name="serviceAddress" type="text" placeholder="Street address where we'll service your car" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
                   </div>
 
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                     <div>
                       <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Preferred Date</label>
-                      <input type="date" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                      <input name="preferredDate" type="date" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
                     </div>
                     <div>
                       <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Preferred Time</label>
-                      <input type="time" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                      <input name="preferredTime" type="time" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
                     </div>
                   </div>
                 </div>
@@ -140,7 +140,7 @@
 
                 <div>
                   <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Vehicle Type</label>
-                  <select style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif; margin-bottom: 16px;" required>
+                  <select name="vehicleType" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif; margin-bottom: 16px;" required>
                     <option value="">Select your vehicle type</option>
                     <option value="sedan">Sedan</option>
                     <option value="suv">SUV</option>
@@ -152,7 +152,7 @@
 
                 <div>
                   <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Special Requests</label>
-                  <textarea placeholder="Any special requests or notes for our team..." rows="4" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif; resize: vertical;"></textarea>
+                  <textarea name="notes" placeholder="Any special requests or notes for our team..." rows="4" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif; resize: vertical;"></textarea>
                 </div>
               </div>
 
@@ -162,6 +162,7 @@
               <p style="text-align: center; color: var(--metallic); font-size: 13px; margin: 0;">
                 We'll confirm your booking via email within 2 hours
               </p>
+              <p id="mobile-booking-status" style="text-align: center; color: var(--metallic); font-size: 13px; margin: 0;"></p>
             </form>
           </div>
         </div>
