@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - INT216D CarWash</title>
+    <link rel="icon" type="image/png" href="./public/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .checkout-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px 40px; background: var(--obsidian); }
+      .checkout-container { max-width: 520px; width: 100%; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; padding: 36px; }
+      .checkout-title { font-family: 'Instrument Serif', serif; font-size: 28px; margin: 0 0 6px; color: var(--ink); }
+      .checkout-subtitle { color: var(--metallic); font-size: 14px; margin: 0 0 24px; }
+      .checkout-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--panel-border); }
+      .checkout-row:last-child { border-bottom: 0; }
+      .checkout-row .label { color: var(--metallic); font-size: 13px; }
+      .checkout-row .value { color: var(--ink); font-size: 14px; font-weight: 500; }
+      .checkout-total { font-size: 20px; font-weight: 700; color: var(--accent); text-align: right; margin: 16px 0; }
+      .checkout-btn { width: 100%; padding: 14px; border-radius: 12px; border: 0; cursor: pointer; font-size: 15px; font-weight: 600; font-family: 'Inter', sans-serif; background: var(--accent); color: #000; transition: opacity 0.2s; }
+      .checkout-btn:hover { opacity: 0.9; }
+        .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .checkout-status { font-size: 13px; margin: 10px 0 0; min-height: 18px; text-align: center; }
+        .checkout-status.success { color: var(--accent); }
+        .checkout-status.error { color: #e74c3c; }
+        .checkout-status.info { color: var(--metallic); }
+        .card-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
+        .card-input { width: 100%; padding: 13px 15px; background: var(--obsidian); border: 1px solid var(--panel-border); border-radius: 10px; color: var(--ink); font-size: 14px; font-family: 'Inter', sans-serif; outline: none; box-sizing: border-box; transition: border-color 0.2s; }
+        .card-input:focus { border-color: var(--accent); }
+        .card-input::placeholder { color: var(--metallic); opacity: 0.5; }
+        .card-label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--metallic); display: block; margin-bottom: 6px; }
+
+      /* RECEIPT */
+      .receipt-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 9999; align-items: center; justify-content: center; }
+      .receipt-overlay.show { display: flex; }
+      .receipt-paper { width: min(420px, 90vw); background: #fff; color: #1a1a1a; border-radius: 4px; overflow: hidden; transform-origin: top center; position: relative; }
+      .receipt-header { background: #111; color: var(--accent); padding: 20px 24px; text-align: center; }
+      .receipt-header h2 { font-family: 'Instrument Serif', serif; font-size: 22px; margin: 0; }
+      .receipt-header p { font-size: 11px; margin: 4px 0 0; opacity: 0.8; }
+      .receipt-body { padding: 20px 24px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6; }
+      .receipt-body .r-line { display: flex; justify-content: space-between; padding: 2px 0; }
+      .receipt-body .r-dots { border-bottom: 1px dotted #ccc; flex: 1; margin: 0 6px; }
+      .receipt-body .r-total { font-size: 16px; font-weight: 700; margin-top: 8px; padding-top: 8px; border-top: 2px solid #333; }
+      .receipt-body .r-code { text-align: center; font-size: 18px; font-weight: 700; letter-spacing: 3px; margin: 12px 0; color: var(--accent); background: #f5f5f5; padding: 8px; border-radius: 4px; }
+      .receipt-footer { padding: 16px 24px; text-align: center; font-size: 11px; color: #888; background: #f9f9f9; }
+      .receipt-done-btn { display: block; margin: 12px auto 0; padding: 10px 30px; background: var(--accent); color: #000; border: 0; border-radius: 100px; cursor: pointer; font-weight: 600; font-size: 14px; }
+
+      /* Print animation */
+      @keyframes paperOut { 0% { transform: scaleY(0); opacity: 0; } 100% { transform: scaleY(1); opacity: 1; } }
+      @keyframes dotPrint { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+      .receipt-paper { animation: paperOut 0.4s ease-out; }
+      .printing-dots { display: inline-block; }
+      .printing-dots span { animation: dotPrint 0.6s infinite; }
+      .printing-dots span:nth-child(2) { animation-delay: 0.2s; }
+      .printing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button id="menu-toggle-btn" class="menu-toggle-btn" type="button" aria-expanded="false" aria-controls="main-nav-links" aria-label="Open menu">Menu</button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./index.html#services" class="nav-link">Services</a>
+          <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+          <a href="./index.html#addons" class="nav-link">Pricing</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">Light</button>
+        <a href="./login.html" id="login-btn" class="pill-btn login-btn">Login</a>
+      </nav>
+
+      <div class="checkout-page">
+        <div class="checkout-container" id="checkout-content">
+          <p style="color:var(--metallic);">Loading checkout...</p>
+        </div>
+      </div>
+
+      <!-- RECEIPT OVERLAY -->
+      <div class="receipt-overlay" id="receipt-overlay">
+        <div>
+          <div class="receipt-paper" id="receipt-paper">
+            <div class="receipt-header">
+              <img src="./public/images/logo.png" alt="INT216D" style="width:60px;height:60px;object-fit:contain;margin-bottom:6px;" />
+              <h2>INT216D Car Wash</h2>
+              <p>Payment Confirmation</p>
+            </div>
+            <div class="receipt-body" id="receipt-body"></div>
+            <div class="receipt-footer">Thank you for your business!</div>
+            <button class="receipt-done-btn" id="receipt-done-btn">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <script>
+      (function() {
+        var API_BASE = localStorage.getItem('int216d:apiBase') || '';
+        var ACCESS_TOKEN_KEY = 'int216d:accessToken';
+        var USER_ROLE_KEY = 'int216d:userRole';
+        var USER_ID_KEY = 'int216d:userId';
+        var USER_EMAIL_KEY = 'int216d:userEmail';
+        var RECEIPTS_KEY = 'int216d:receipts';
+
+        var userProfile = null;
+        var userMembership = null;
+        var discountPercent = 0;
+        var freeWashCredits = 0;
+        var discountedPrice = 0;
+
+        function getToken() { return localStorage.getItem(ACCESS_TOKEN_KEY); }
+
+        async function api(path, opts) {
+          opts = opts || {};
+          var token = getToken();
+          var headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+          if (token) headers.Authorization = 'Bearer ' + token;
+          var resp = await fetch(API_BASE + path, Object.assign({}, opts, { headers: headers, credentials: 'include' }));
+          var data = null;
+          try { data = await resp.json(); } catch (_) { data = null; }
+          if (resp.status === 401) {
+            localStorage.removeItem(ACCESS_TOKEN_KEY);
+            localStorage.removeItem(USER_ROLE_KEY);
+            localStorage.removeItem(USER_ID_KEY);
+            window.location.href = './login.html';
+            return null;
+          }
+          if (!resp.ok) {
+            var msg = (data && (data.message || data.error)) || ('Request failed (' + resp.status + ')');
+            throw new Error(msg);
+          }
+          return data;
+        }
+
+        var params = new URLSearchParams(window.location.search);
+        var type = params.get('type') || 'booking';
+        var itemId = params.get('id') || '';
+        var itemName = params.get('name') || 'Service';
+        var originalPrice = parseFloat(params.get('price') || '0');
+        var itemData = {};
+        try { itemData = JSON.parse(params.get('data') || '{}'); } catch (_) {}
+
+        if (type === 'membership' && !getToken()) {
+          window.location.href = './login.html';
+        }
+
+        // ── Fetch user profile + membership for real data & discounts ──
+        async function loadUserContext() {
+          if (!getToken()) return;
+
+          try {
+            var profileRes = await api('/api/v1/clients/me', { method: 'GET' });
+            if (profileRes && profileRes.data) {
+              userProfile = profileRes.data;
+            }
+          } catch (_) { /* profile might not exist yet */ }
+
+          try {
+            var membershipRes = await api('/api/v1/membership', { method: 'GET' });
+            if (membershipRes && membershipRes.plan) {
+              userMembership = membershipRes;
+              discountPercent = Number(membershipRes.plan.discountPercentage || 0);
+              freeWashCredits = Number(membershipRes.plan.freeWashes || 0);
+              if (freeWashCredits > 0 && membershipRes.freeWashesUsed !== undefined) {
+                freeWashCredits = Math.max(0, freeWashCredits - Number(membershipRes.freeWashesUsed || 0));
+              }
+            }
+          } catch (_) { /* no membership yet */ }
+        }
+
+        // ── Calculate discount ──
+        function calcDiscount() {
+          if (type === 'membership') {
+            discountedPrice = originalPrice;
+            return;
+          }
+          // For bookings: apply membership discount
+          if (freeWashCredits > 0 && originalPrice > 0) {
+            // VIP/plan has free washes — this wash is FREE
+            discountedPrice = 0;
+            return;
+          }
+          if (discountPercent > 0) {
+            discountedPrice = originalPrice * (1 - discountPercent / 100);
+          } else {
+            discountedPrice = originalPrice;
+          }
+        }
+
+        function renderCheckout() {
+          var container = document.getElementById('checkout-content');
+          var isMembership = type === 'membership';
+          var displayPrice = discountedPrice;
+          var hasDiscount = discountedPrice < originalPrice;
+          var isFree = discountedPrice === 0 && originalPrice > 0;
+          var isGuest = !getToken();
+
+          var userName = 'Guest';
+          if (userProfile) {
+            userName = (userProfile.firstName || '') + ' ' + (userProfile.lastName || '');
+            userName = userName.trim() || 'Customer';
+          } else if (itemData.fullName) {
+            userName = itemData.fullName;
+          }
+
+          container.innerHTML = [
+            '<h2 class="checkout-title">' + (isMembership ? 'Membership Subscription' : 'Booking Checkout') + '</h2>',
+            '<p class="checkout-subtitle">' + (isGuest ? 'Guest booking — sign in for discounts.' : 'Review your order and enter card details below.') + '</p>',
+            '<div class="checkout-row"><span class="label">Customer</span><span class="value">' + userName + '</span></div>',
+            '<div class="checkout-row"><span class="label">Item</span><span class="value">' + itemName + '</span></div>',
+            isMembership ? '<div class="checkout-row"><span class="label">Billing</span><span class="value">Monthly</span></div>' : '',
+            isMembership ? '' : '<div class="checkout-row"><span class="label">Service Type</span><span class="value">' + (itemData.serviceType || 'Standard') + '</span></div>',
+            isMembership ? '' : '<div class="checkout-row"><span class="label">Date</span><span class="value">' + (itemData.scheduledAt || 'TBD') + '</span></div>',
+            isMembership ? '' : '<div class="checkout-row"><span class="label">Location</span><span class="value">' + (itemData.location || 'N/A') + '</span></div>',
+            hasDiscount ? '<div class="checkout-row"><span class="label">Subtotal</span><span class="value">R' + originalPrice.toFixed(2) + '</span></div>' : '',
+            hasDiscount ? '<div class="checkout-row"><span class="label" style="color:var(--accent);">' + (isFree ? 'VIP Free Wash' : 'Membership Discount (' + discountPercent + '%)') + '</span><span class="value" style="color:var(--accent);">' + (isFree ? '-FREE' : '-R' + (originalPrice - discountedPrice).toFixed(2)) + '</span></div>' : '',
+            '<div class="checkout-total">R' + displayPrice.toFixed(2) + '</div>',
+            isFree ? '' : '<p style="font-size:11px;color:var(--metallic);margin:0 0 16px;text-align:center;">Demo Payment — No real charge. Use any card number.</p>',
+            isFree ? '' : '<div style="margin-bottom:12px;"><span class="card-label">Card Number</span><input id="card-number" class="card-input" type="text" placeholder="4242 4242 4242 4242" maxlength="19" /></div>',
+            isFree ? '' : '<div class="card-row" style="margin-bottom:16px;">' +
+              '  <div><span class="card-label">Expiry</span><input id="card-expiry" class="card-input" type="text" placeholder="12/26" maxlength="5" /></div>' +
+              '  <div><span class="card-label">CVV</span><input id="card-cvv" class="card-input" type="text" placeholder="123" maxlength="4" /></div>' +
+              '</div>',
+            '<button class="checkout-btn" id="pay-btn">' + (isFree ? 'Claim Free Wash' : 'Pay R' + displayPrice.toFixed(2)) + '</button>',
+            '<p id="checkout-status" class="checkout-status info"></p>'
+          ].join('');
+
+          document.getElementById('pay-btn').addEventListener('click', processPayment);
+        }
+
+        async function processPayment() {
+          var status = document.getElementById('checkout-status');
+          var btn = document.getElementById('pay-btn');
+          var cardNumber = '';
+          var cardExpiry = '';
+          var cardCvv = '';
+          var isFree = discountedPrice === 0 && originalPrice > 0;
+
+          if (!isFree) {
+            cardNumber = (document.getElementById('card-number').value || '').replace(/\s/g, '');
+            cardExpiry = (document.getElementById('card-expiry').value || '').trim();
+            cardCvv = (document.getElementById('card-cvv').value || '').trim();
+            if (!cardNumber || cardNumber.length < 13) {
+              status.textContent = 'Enter a valid card number.';
+              status.className = 'checkout-status error';
+              return;
+            }
+            if (!cardExpiry || cardExpiry.length < 4) {
+              status.textContent = 'Enter a valid expiry date (MM/YY).';
+              status.className = 'checkout-status error';
+              return;
+            }
+            if (!cardCvv || cardCvv.length < 3) {
+              status.textContent = 'Enter a valid CVV.';
+              status.className = 'checkout-status error';
+              return;
+            }
+          }
+
+          status.textContent = 'Processing' + (isFree ? ' free wash...' : ' payment...');
+          status.className = 'checkout-status info';
+          btn.disabled = true;
+          btn.textContent = 'Processing...';
+
+          var email = localStorage.getItem(USER_EMAIL_KEY) || itemData.email || 'guest@carwash.local';
+          var fullName = 'Guest';
+          var phone = '';
+          if (userProfile) {
+            email = localStorage.getItem(USER_EMAIL_KEY) || email;
+            fullName = (userProfile.firstName || '') + ' ' + (userProfile.lastName || '');
+            fullName = fullName.trim() || 'Customer';
+            phone = userProfile.phone || '';
+          } else if (itemData.email && itemData.email !== 'customer@test.com') {
+            email = itemData.email;
+            phone = itemData.phone || '';
+          }
+          if (itemData.fullName && itemData.fullName !== 'Valued Customer') {
+            fullName = itemData.fullName;
+          }
+          if (!phone && itemData.phone) {
+            phone = itemData.phone;
+          }
+
+          try {
+            var paymentToken = isFree ? 'free_wash_' + Date.now() : ('demo_tok_' + (cardNumber.slice(-4) || '0000') + '_' + Date.now());
+            var endpoint, body;
+            if (type === 'membership') {
+              endpoint = '/api/v1/membership/subscribe';
+              body = {
+                planId: parseInt(itemId),
+                autoRenew: true,
+                email: email,
+                payment: { gateway: 'SIMULATED', paymentMethodToken: paymentToken, amount: discountedPrice }
+              };
+            } else {
+              endpoint = getToken() ? '/api/v1/bookings' : '/api/v1/bookings/guest';
+              body = Object.assign({}, itemData, {
+                email: email,
+                fullName: fullName,
+                phone: phone || itemData.phone || '',
+                discountedPrice: discountedPrice,
+                originalPrice: originalPrice,
+                membershipDiscountApplied: discountPercent > 0 || isFree,
+                payment: { gateway: 'SIMULATED', paymentMethodToken: paymentToken, amount: discountedPrice }
+              });
+            }
+
+            var res = await api(endpoint, { method: 'POST', body: JSON.stringify(body) });
+
+            status.textContent = 'Success!';
+            status.className = 'checkout-status success';
+
+            var receiptData = {
+              itemName: itemName,
+              originalPrice: originalPrice,
+              finalPrice: discountedPrice,
+              discountPercent: discountPercent,
+              isFree: isFree,
+              paymentRef: res.paymentReference || res.latestPaymentReference || 'PAY-' + Date.now(),
+              date: new Date().toLocaleString(),
+              fullName: fullName,
+              email: email,
+              phone: phone,
+              location: itemData.location || '',
+              type: type,
+              confirmCode: res.id || res.confirmationCode || 'N/A',
+              cardLast4: isFree ? '' : cardNumber.slice(-4)
+            };
+
+            // Save receipt to localStorage
+            try {
+              var receipts = JSON.parse(localStorage.getItem(RECEIPTS_KEY) || '[]');
+              receipts.push(receiptData);
+              localStorage.setItem(RECEIPTS_KEY, JSON.stringify(receipts));
+            } catch(_) {}
+
+            showReceipt(receiptData);
+          } catch (err) {
+            status.textContent = 'Failed: ' + err.message;
+            status.className = 'checkout-status error';
+            btn.disabled = false;
+            btn.textContent = isFree ? 'Claim Free Wash' : 'Pay R' + discountedPrice.toFixed(2);
+          }
+        }
+
+        function showReceipt(data) {
+          var overlay = document.getElementById('receipt-overlay');
+          var receiptBody = document.getElementById('receipt-body');
+          var done = document.getElementById('receipt-done-btn');
+
+          receiptBody.innerHTML = [
+            '<div class="r-line"><span>Date</span><span>' + data.date + '</span></div>',
+            '<div class="r-line"><span>Customer</span><span>' + data.fullName + '</span></div>',
+            '<div class="r-line"><span>Email</span><span>' + data.email + '</span></div>',
+            data.phone ? '<div class="r-line"><span>Phone</span><span>' + data.phone + '</span></div>' : '',
+            data.location ? '<div class="r-line"><span>Location</span><span>' + data.location + '</span></div>' : '',
+            data.cardLast4 ? '<div class="r-line"><span>Card</span><span>**** ' + data.cardLast4 + '</span></div>' : '',
+            '<div class="r-line"><span></span><span class="r-dots"></span><span></span></div>',
+            '<div class="r-line"><span>Item</span><span>' + data.itemName + '</span></div>',
+            data.isFree ? '<div class="r-line"><span style="color:var(--accent);">VIP Free Wash</span><span style="color:var(--accent);">-R' + data.originalPrice.toFixed(2) + '</span></div>' : '',
+            data.discountPercent > 0 && !data.isFree ? '<div class="r-line"><span style="color:var(--accent);">Discount (' + data.discountPercent + '%)</span><span style="color:var(--accent);">-R' + (data.originalPrice - data.finalPrice).toFixed(2) + '</span></div>' : '',
+            '<div class="r-line r-total"><span>TOTAL PAID</span><span>R' + data.finalPrice.toFixed(2) + '</span></div>',
+            '<div class="r-line"><span>Status</span><span style="color:green;">' + (data.isFree ? 'FREE WASH' : 'PAID') + '</span></div>',
+            '<div class="r-line"><span>Ref</span><span>' + data.paymentRef + '</span></div>',
+            data.confirmCode && data.confirmCode !== 'N/A' ? '<div class="r-code">WASH CODE<br/>' + data.confirmCode + '</div>' : '',
+            data.type === 'booking' ? '<p style="text-align:center;font-size:11px;margin:8px 0;color:#666;">Share this code with your washer</p>' : ''
+          ].join('');
+
+          overlay.classList.add('show');
+
+          done.onclick = function() {
+            overlay.classList.remove('show');
+              window.location.href = './receipts.html';
+          };
+        }
+
+        // ── Bootstrap ──
+        async function init() {
+          await loadUserContext();
+          calcDiscount();
+          renderCheckout();
+        }
+        init();
+
+        // ── Login state ──
+        (function() {
+          var btn = document.getElementById('login-btn');
+          var token = getToken();
+          if (!btn) return;
+          if (token) {
+            btn.textContent = 'Logout';
+            btn.href = '#';
+            btn.onclick = function(e) {
+              e.preventDefault();
+              localStorage.removeItem(ACCESS_TOKEN_KEY);
+              localStorage.removeItem(USER_ROLE_KEY);
+              localStorage.removeItem(USER_ID_KEY);
+              window.location.href = './index.html';
+            };
+          }
+        })();
+
+        // ── Theme ──
+        (function() {
+          var b = document.getElementById('theme-toggle-btn');
+          var html = document.documentElement;
+          var t = localStorage.getItem('int216d-theme') || 'dark';
+          html.setAttribute('data-theme', t);
+          if (b) b.textContent = t === 'dark' ? 'Dark' : 'Light';
+          if (b) b.addEventListener('click', function() {
+            var cur = html.getAttribute('data-theme') || 'dark';
+            var next = cur === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('int216d-theme', next);
+            b.textContent = next === 'dark' ? 'Dark' : 'Light';
+          });
+        })();
+
+        // ── Mobile menu ──
+        (function() {
+          var t = document.getElementById('menu-toggle-btn'), n = document.getElementById('main-nav'), l = document.getElementById('main-nav-links');
+          if (!t || !n) return;
+          t.addEventListener('click', function() {
+            var o = n.classList.toggle('menu-open');
+            t.setAttribute('aria-expanded', o ? 'true' : 'false');
+            t.textContent = o ? 'Close' : 'Menu';
+          });
+          if (l) l.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() { if (window.innerWidth <= 768) { n.classList.remove('menu-open'); } });
+          });
+        })();
+      })();
+    </script>
+  </body>
+</html>

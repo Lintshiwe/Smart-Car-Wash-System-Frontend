@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — INT216D CarWash</title>
+    <link rel="icon" type="image/png" href="./public/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .admin-page { min-height: 100vh; padding: 100px 24px 60px; background: var(--obsidian); }
+      .admin-container { max-width: 1340px; margin: 0 auto; }
+      .admin-header { margin-bottom: 32px; }
+      .admin-header h1 { font-family: 'Instrument Serif', serif; font-size: 40px; margin: 0 0 6px; color: var(--ink); }
+      .admin-header p { color: var(--metallic); font-size: 14px; margin: 0; }
+      .admin-status { padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 24px; }
+      .admin-status.info { background: rgba(18,179,166,0.08); color: var(--accent); border: 1px solid rgba(18,179,166,0.15); }
+      .admin-status.error { background: rgba(231,76,60,0.08); color: #e74c3c; border: 1px solid rgba(231,76,60,0.15); }
+      .admin-status.success { background: rgba(34,197,94,0.08); color: #22c55e; border: 1px solid rgba(34,197,94,0.15); }
+      .admin-locked { text-align: center; padding: 60px 20px; }
+      .admin-locked h2 { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--ink); margin-bottom: 12px; }
+      .admin-locked p { color: var(--metallic); margin-bottom: 20px; }
+      .admin-locked .lock-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+
+      .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; }
+      .kpi-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 14px; padding: 20px 18px; transition: border-color 0.3s, box-shadow 0.3s; }
+      .kpi-card:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(18,179,166,0.06); }
+      .kpi-card .kpi-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--metallic); margin: 0 0 8px; }
+      .kpi-card .kpi-value { font-size: 28px; font-weight: 700; color: var(--ink); margin: 0 0 4px; font-family: 'Instrument Serif', serif; }
+      .kpi-card .kpi-sub { font-size: 12px; color: var(--metallic); }
+      .kpi-accent { border-color: rgba(18,179,166,0.25); }
+      .kpi-accent .kpi-value { color: var(--accent); }
+
+      .section-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 14px; padding: 22px 24px; margin-bottom: 20px; }
+      .section-card h3 { font-family: 'Instrument Serif', serif; font-size: 22px; margin: 0 0 16px; color: var(--ink); }
+      .section-card .section-subtitle { font-size: 12px; color: var(--metallic); margin: -10px 0 14px; }
+      .section-card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+      .section-card-header h3 { margin: 0; }
+
+      .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      .status-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--obsidian); border: 1px solid var(--panel-border); }
+      .status-item .count { font-size: 32px; font-weight: 700; font-family: 'Instrument Serif', serif; }
+      .status-item .label { font-size: 12px; color: var(--metallic); margin-top: 4px; }
+      .st-active .count { color: var(--accent); }
+      .st-expired .count { color: #e67e22; }
+      .st-suspended .count { color: #9b59b6; }
+      .st-cancelled .count { color: #e74c3c; }
+
+      .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+      .admin-table th { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-border); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--metallic); font-weight: 500; white-space: nowrap; }
+      .admin-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--ink); }
+      .admin-table tr:hover td { background: rgba(18,179,166,0.03); }
+
+      .badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+      .badge-active, .badge-succeeded, .badge-completed { background: rgba(18,179,166,0.12); color: var(--accent); }
+      .badge-expired, .badge-pending { background: rgba(230,126,34,0.12); color: #e67e22; }
+      .badge-suspended { background: rgba(155,89,182,0.12); color: #9b59b6; }
+      .badge-cancelled, .badge-failed, .badge-voided, .badge-deleted { background: rgba(231,76,60,0.12); color: #e74c3c; }
+      .badge-refunded { background: rgba(234,179,8,0.12); color: #eab308; }
+      .badge-admin { background: rgba(155,89,182,0.12); color: #9b59b6; }
+      .badge-client { background: rgba(18,179,166,0.12); color: var(--accent); }
+
+      .admin-btn { padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 600; cursor: pointer; border: 0; font-family: 'Inter', sans-serif; transition: opacity 0.2s; white-space: nowrap; }
+      .admin-btn:hover { opacity: 0.85; }
+      .admin-btn-danger { background: rgba(231,76,60,0.15); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
+      .admin-btn-action { background: rgba(18,179,166,0.15); color: var(--accent); border: 1px solid rgba(18,179,166,0.3); }
+      .admin-btn-warn { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+      .admin-btn-success { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+      .admin-btn-primary { background: var(--accent); color: #000; border: 1px solid var(--accent); }
+
+      .admin-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+      .admin-tab { padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--panel-border); background: transparent; color: var(--metallic); transition: all 0.2s; font-family: 'Inter', sans-serif; }
+      .admin-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+      .admin-tab:hover:not(.active) { border-color: var(--metallic); color: var(--ink); }
+
+      .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+
+      .action-cell { display: flex; gap: 4px; flex-wrap: wrap; }
+
+      /* MODAL */
+      .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+      .modal-overlay.open { display: flex; }
+      .modal-box { width: min(560px, 100%); background: var(--panel); border: 1px solid var(--panel-border); border-radius: 16px; padding: 28px; max-height: 90vh; overflow-y: auto; }
+      .modal-box h2 { font-family: 'Instrument Serif', serif; font-size: 24px; margin: 0 0 20px; color: var(--ink); }
+      .modal-box label { display: block; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--metallic); margin-bottom: 6px; }
+      .modal-box input, .modal-box select, .modal-box textarea { width: 100%; padding: 10px 14px; background: var(--obsidian); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: 'Inter', sans-serif; margin-bottom: 14px; box-sizing: border-box; }
+      .modal-box input:focus, .modal-box select:focus, .modal-box textarea:focus { border-color: var(--accent); outline: none; }
+      .modal-box textarea { resize: vertical; min-height: 80px; }
+      .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .modal-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+      .modal-check { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+      .modal-check input { width: auto; margin: 0; }
+      .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+      .modal-close { position: absolute; top: 12px; right: 12px; background: none; border: 0; color: var(--metallic); font-size: 20px; cursor: pointer; }
+
+      .user-role-select { display: inline-block; padding: 4px 8px; border-radius: 6px; background: var(--obsidian); border: 1px solid var(--panel-border); color: var(--ink); font-size: 12px; font-family: 'Inter', sans-serif; }
+
+      @media (max-width: 768px) {
+        .status-grid { grid-template-columns: repeat(2, 1fr); }
+        .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        .modal-row, .modal-row-3 { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button id="menu-toggle-btn" class="menu-toggle-btn" type="button" aria-expanded="false" aria-controls="main-nav-links" aria-label="Open menu">Menu</button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./services.html" class="nav-link">Services</a>
+          <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+          <a href="./pricing.html" class="nav-link">Pricing</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">Light</button>
+        <a href="./login.html" id="login-btn" class="pill-btn login-btn">Login</a>
+      </nav>
+
+      <div class="admin-page" id="admin-dashboard-page">
+        <div class="admin-container">
+          <div class="admin-locked" id="admin-locked">
+            <span class="lock-icon">🔒</span>
+            <h2>Restricted Access</h2>
+            <p>You must be logged in with an Administrator account to view this dashboard.</p>
+            <a href="./login.html" class="pill-btn btn-primary" style="text-decoration:none;display:inline-block;padding:10px 28px;">Sign In as Admin</a>
+          </div>
+
+          <div id="admin-content" style="display:none;">
+            <div class="admin-header">
+              <p class="eyebrow">Operations Control</p>
+              <h1>Admin Dashboard</h1>
+              <p>Complete platform overview — memberships, bookings, payments, plans, and user management.</p>
+            </div>
+
+            <div id="admin-dashboard-status" class="admin-status info">Loading dashboard data...</div>
+
+            <div class="admin-tabs">
+              <button class="admin-tab active" data-admin-tab="overview">Overview</button>
+              <button class="admin-tab" data-admin-tab="memberships">Memberships</button>
+              <button class="admin-tab" data-admin-tab="bookings">Bookings</button>
+              <button class="admin-tab" data-admin-tab="payments">Payments</button>
+              <button class="admin-tab" data-admin-tab="plans">Plans</button>
+              <button class="admin-tab" data-admin-tab="users">Users</button>
+              <button class="admin-tab" data-admin-tab="expiring">Expiring Soon</button>
+            </div>
+
+            <!-- TAB: Overview -->
+            <div class="admin-tab-content" id="tab-overview">
+              <div class="kpi-grid" id="overview-kpi"></div>
+              <div class="section-card">
+                <h3>Membership Status</h3>
+                <div class="status-grid">
+                  <div class="status-item st-active"><div class="count" id="br-active">0</div><div class="label">Active</div></div>
+                  <div class="status-item st-expired"><div class="count" id="br-expired">0</div><div class="label">Expired</div></div>
+                  <div class="status-item st-suspended"><div class="count" id="br-suspended">0</div><div class="label">Suspended</div></div>
+                  <div class="status-item st-cancelled"><div class="count" id="br-cancelled">0</div><div class="label">Cancelled</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB: Memberships -->
+            <div class="admin-tab-content" id="tab-memberships" style="display:none;">
+              <div class="section-card">
+                <div class="section-card-header"><h3>All Memberships</h3></div>
+                <p class="section-subtitle">Manage client memberships — suspend, reactivate, cancel.</p>
+                <div style="overflow-x:auto;">
+                  <table class="admin-table">
+                    <thead><tr><th>Client ID</th><th>Plan</th><th>Status</th><th>Start Date</th><th>Expiry</th><th>Credits</th><th>Auto</th><th>Actions</th></tr></thead>
+                    <tbody id="memberships-body"></tbody>
+                  </table>
+                </div>
+                <div class="pagination" id="memberships-pag"></div>
+              </div>
+            </div>
+
+            <!-- TAB: Bookings -->
+            <div class="admin-tab-content" id="tab-bookings" style="display:none;">
+              <div class="section-card">
+                <div class="section-card-header"><h3>All Bookings</h3></div>
+                <p class="section-subtitle">Manage wash bookings — complete, cancel, delete.</p>
+                <div style="overflow-x:auto;">
+                  <table class="admin-table">
+                    <thead><tr><th>ID</th><th>Client</th><th>Service</th><th>Type</th><th>Location</th><th>Date</th><th>Status</th><th>Payment</th><th>Actions</th></tr></thead>
+                    <tbody id="bookings-body"></tbody>
+                  </table>
+                </div>
+                <div class="pagination" id="bookings-pag"></div>
+              </div>
+            </div>
+
+            <!-- TAB: Payments -->
+            <div class="admin-tab-content" id="tab-payments" style="display:none;">
+              <div class="section-card">
+                <div class="section-card-header"><h3>All Payments</h3></div>
+                <p class="section-subtitle">Manage payment transactions — void, refund, delete.</p>
+                <div style="overflow-x:auto;">
+                  <table class="admin-table">
+                    <thead><tr><th>ID</th><th>Reference</th><th>Client</th><th>Purpose</th><th>Amount</th><th>Status</th><th>Gateway</th><th>Date</th><th>Actions</th></tr></thead>
+                    <tbody id="payments-body"></tbody>
+                  </table>
+                </div>
+                <div class="pagination" id="payments-pag"></div>
+              </div>
+            </div>
+
+            <!-- TAB: Plans -->
+            <div class="admin-tab-content" id="tab-plans" style="display:none;">
+              <div class="section-card">
+                <div class="section-card-header">
+                  <h3>Membership Plans</h3>
+                  <button class="admin-btn admin-btn-primary" onclick="openPlanModal()">+ Create Plan</button>
+                </div>
+                <p class="section-subtitle">Create, edit, or delete membership plans.</p>
+                <div style="overflow-x:auto;">
+                  <table class="admin-table">
+                    <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Credits</th><th>Free Washes</th><th>Active</th><th>Discount</th><th>Actions</th></tr></thead>
+                    <tbody id="all-plans-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB: Users -->
+            <div class="admin-tab-content" id="tab-users" style="display:none;">
+              <div class="section-card">
+                <div class="section-card-header"><h3>User Management</h3></div>
+                <p class="section-subtitle">View users, change roles, and delete accounts.</p>
+                <div style="overflow-x:auto;">
+                  <table class="admin-table">
+                    <thead><tr><th>User ID</th><th>Email</th><th>Role</th><th>Verified</th><th>Active</th><th>Created</th><th>Actions</th></tr></thead>
+                    <tbody id="users-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB: Expiring -->
+            <div class="admin-tab-content" id="tab-expiring" style="display:none;">
+              <div class="section-card">
+                <h3>Expiring Memberships</h3>
+                <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;" id="expiring-btns"></div>
+                <div style="overflow-x:auto;">
+                  <table class="admin-table">
+                    <thead><tr><th>Client ID</th><th>Plan</th><th>Expiry</th><th>Days Left</th><th>Credits</th><th>Auto-Renew</th></tr></thead>
+                    <tbody id="expiring-body"><tr><td colspan="6" style="color:var(--metallic);text-align:center;padding:20px;">Select a timeframe above</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLAN MODAL -->
+      <div class="modal-overlay" id="plan-modal">
+        <div class="modal-box" style="position:relative;">
+          <button class="modal-close" onclick="closePlanModal()">&times;</button>
+          <h2 id="plan-modal-title">Create Plan</h2>
+          <input type="hidden" id="plan-id" />
+          <label>Name</label><input id="plan-name" placeholder="e.g. Platinum" />
+          <label>Description</label><textarea id="plan-desc" placeholder="Plan description"></textarea>
+          <div class="modal-row">
+            <div><label>Monthly Price (R)</label><input id="plan-price" type="number" step="0.01" min="0" placeholder="0.00" /></div>
+            <div><label>Credits / Month</label><input id="plan-credits" type="number" min="0" placeholder="0" /></div>
+          </div>
+          <div class="modal-row-3">
+            <div><label>Free Washes</label><input id="plan-free-washes" type="number" min="0" placeholder="0" /></div>
+            <div><label>Discount %</label><input id="plan-discount" type="number" step="0.01" min="0" max="100" placeholder="0" /></div>
+            <div>
+              <div class="modal-check" style="margin-top:6px;"><input type="checkbox" id="plan-active" checked /><label style="margin:0;">Active</label></div>
+              <div class="modal-check"><input type="checkbox" id="plan-discount-eligible" /><label style="margin:0;text-transform:none;letter-spacing:normal;">Discount eligible</label></div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="admin-btn admin-btn-danger" onclick="closePlanModal()">Cancel</button>
+            <button class="admin-btn admin-btn-primary" id="plan-save-btn" onclick="savePlan()">Save Plan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var API_BASE = localStorage.getItem('int216d:apiBase') || 'http://localhost:8080';
+      var AK = 'int216d:accessToken', RK = 'int216d:userRole', UK = 'int216d:userId';
+      var DASHBOARD_API = '/api/dashboard/admin';
+
+      function getToken() { return localStorage.getItem(AK); }
+      function getRole() { return localStorage.getItem(RK); }
+      function isAdmin() { return getRole() === 'ADMIN'; }
+      function money(v) { return 'R' + Number(v || 0).toFixed(2); }
+      function setStatus(msg, type) { var e = document.getElementById('admin-dashboard-status'); if (e) { e.textContent = msg; e.className = 'admin-status ' + (type || 'info'); } }
+
+      async function api(path, opts) {
+        opts = opts || {};
+        var token = getToken();
+        var headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+        if (token) headers.Authorization = 'Bearer ' + token;
+        var resp = await fetch(API_BASE + path, Object.assign({}, opts, { headers: headers, credentials: 'include' }));
+        var data = null;
+        try { data = await resp.json(); } catch (_) { data = null; }
+        if (resp.status === 401) {
+          localStorage.removeItem(AK); localStorage.removeItem(RK); localStorage.removeItem(UK);
+          window.location.href = './login.html'; return null;
+        }
+        if (!resp.ok) {
+          var msg = (data && (data.message || data.error)) || ('Request failed (' + resp.status + ')');
+          throw new Error(msg);
+        }
+        return data;
+      }
+
+      function badge(val) {
+        if (!val) return '';
+        var cls = 'badge badge-' + String(val).toLowerCase();
+        return '<span class="' + cls + '">' + val + '</span>';
+      }
+
+      function checkAccess() {
+        var locked = document.getElementById('admin-locked');
+        var content = document.getElementById('admin-content');
+        if (!getToken() || !isAdmin()) {
+          if (locked) locked.style.display = '';
+          if (content) content.style.display = 'none';
+          return false;
+        }
+        if (locked) locked.style.display = 'none';
+        if (content) content.style.display = '';
+        return true;
+      }
+
+      if (!checkAccess()) {
+        // locked
+      } else {
+        loadDashboard();
+        initTabs();
+      }
+
+      function initTabs() {
+        document.querySelectorAll('.admin-tab').forEach(function(t) {
+          t.addEventListener('click', function() {
+            if (!checkAccess()) return;
+            document.querySelectorAll('.admin-tab').forEach(function(b) { b.classList.remove('active'); });
+            t.classList.add('active');
+            document.querySelectorAll('.admin-tab-content').forEach(function(c) { c.style.display = 'none'; });
+            var target = document.getElementById('tab-' + t.getAttribute('data-admin-tab'));
+            if (target) target.style.display = '';
+            var tabName = t.getAttribute('data-admin-tab');
+            if (tabName === 'memberships') loadMemberships(0);
+            if (tabName === 'bookings') loadBookings(0);
+            if (tabName === 'payments') loadPayments(0);
+            if (tabName === 'plans') loadAllPlans();
+            if (tabName === 'users') loadUsers();
+          });
+        });
+      }
+
+      async function loadDashboard() {
+        if (!checkAccess()) return;
+        setStatus('Loading dashboard...', 'info');
+        try {
+          var [dash, breakdown, plans] = await Promise.all([
+            api('/api/v1/admin/dashboard'),
+            api('/api/v1/admin/memberships/status-breakdown'),
+            api('/api/v1/admin/plans/analytics')
+          ]);
+          document.getElementById('overview-kpi').innerHTML = [
+            { label: 'Total Members', value: dash.totalMembers, sub: 'All memberships' },
+            { label: 'Active Memberships', value: dash.totalActiveMemberships, sub: 'Currently subscribed', accent: true },
+            { label: 'Monthly Revenue', value: money(dash.totalMonthlyRevenue), sub: 'Recurring revenue' },
+            { label: 'Active Plans', value: dash.activePlans, sub: 'Available plans' },
+            { label: 'Avg Plan Price', value: money(dash.averagePlanPrice), sub: 'Across all plans' },
+            { label: 'Suspended', value: dash.totalSuspendedMemberships, sub: 'Suspended memberships' }
+          ].map(function(k) {
+            return '<div class="kpi-card' + (k.accent ? ' kpi-accent' : '') + '"><p class="kpi-label">' + k.label + '</p><p class="kpi-value">' + k.value + '</p><p class="kpi-sub">' + k.sub + '</p></div>';
+          }).join('');
+          ['br-active', 'br-expired', 'br-suspended', 'br-cancelled'].forEach(function(id, i) {
+            var vals = [breakdown.activeMemberships, breakdown.expiredMemberships, breakdown.suspendedMemberships, breakdown.cancelledMemberships];
+            var el = document.getElementById(id); if (el) el.textContent = vals[i];
+          });
+          setStatus('Dashboard loaded.', 'info');
+        } catch (err) { setStatus(err.message, 'error'); }
+      }
+
+      // === MEMBERSHIPS (CRUD) ===
+      var mp = 0;
+      async function loadMemberships(page) { mp = page;
+        try {
+          var res = await api('/api/v1/admin/memberships?page=' + page + '&size=20');
+          var items = res.content || [];
+          var tbody = document.getElementById('memberships-body');
+          tbody.innerHTML = items.length === 0
+            ? '<tr><td colspan="8" style="color:var(--metallic);padding:16px;text-align:center;">No memberships.</td></tr>'
+            : items.map(function(m) {
+                var actions = [];
+                if (m.status === 'ACTIVE') {
+                  actions.push('<button class="admin-btn admin-btn-danger" onclick="membershipAction(' + m.clientId + ',\'suspend\')">Suspend</button>');
+                  actions.push('<button class="admin-btn admin-btn-warn" onclick="membershipAction(' + m.clientId + ',\'cancel\')">Cancel</button>');
+                }
+                if (m.status === 'SUSPENDED' || m.status === 'EXPIRED') {
+                  actions.push('<button class="admin-btn admin-btn-success" onclick="membershipAction(' + m.clientId + ',\'reactivate\')">Reactivate</button>');
+                }
+                return '<tr><td style="font-family:monospace;">' + String(m.clientId||'').slice(0,8) + '</td><td style="font-weight:500;">' + (m.planName||'') + '</td><td>' + badge(m.status) + '</td><td>' + (m.startDate ? new Date(m.startDate).toLocaleDateString() : '—') + '</td><td>' + (m.expiryDate ? new Date(m.expiryDate).toLocaleDateString() : '—') + '</td><td>' + (m.creditsRemaining||0) + '</td><td>' + (m.autoRenew ? 'Yes' : 'No') + '</td><td class="action-cell">' + (actions.length ? actions.join('') : '—') + '</td></tr>';
+              }).join('');
+          var tp = res.totalPages || 1;
+          document.getElementById('memberships-pag').innerHTML = tp > 1 ? Array.from({length:tp}, function(_,i){ return '<button class="admin-btn ' + (i===page?'admin-btn-action':'') + '" onclick="loadMemberships(' + i + ')">' + (i+1) + '</button>'; }).join('') : '';
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      async function membershipAction(cid, action) {
+        var labels = { suspend: 'Suspend', cancel: 'Cancel', reactivate: 'Reactivate' };
+        if (!confirm(labels[action] + ' membership for client ' + cid + '?')) return;
+        setStatus(labels[action] + 'ing membership...', 'info');
+        try {
+          var resp = await fetch(API_BASE + DASHBOARD_API + '/memberships/' + cid + '/' + action, { method: 'POST' });
+          var data = await resp.json();
+          if (!resp.ok) throw new Error(data.error || 'Failed');
+          setStatus(labels[action] + ' successful.', 'success');
+          loadMemberships(mp);
+          loadDashboard();
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      // === BOOKINGS (CRUD) ===
+      var bp = 0;
+      async function loadBookings(page) { bp = page;
+        try {
+          var res = await api('/api/v1/admin/bookings?page=' + page + '&size=20');
+          var items = res.content || [];
+          var tbody = document.getElementById('bookings-body');
+          tbody.innerHTML = items.length === 0
+            ? '<tr><td colspan="9" style="color:var(--metallic);padding:16px;text-align:center;">No bookings.</td></tr>'
+            : items.map(function(b) {
+                var actions = [];
+                if (b.status !== 'COMPLETED' && b.status !== 'CANCELLED') {
+                  actions.push('<button class="admin-btn admin-btn-success" onclick="bookingAction(' + b.id + ',\'complete\')">Complete</button>');
+                  actions.push('<button class="admin-btn admin-btn-danger" onclick="bookingAction(' + b.id + ',\'cancel\')">Cancel</button>');
+                }
+                actions.push('<button class="admin-btn admin-btn-warn" onclick="bookingAction(' + b.id + ',\'delete\')">Delete</button>');
+                return '<tr><td>' + b.id + '</td><td style="font-family:monospace;">' + String(b.clientId||'').slice(0,8) + '</td><td>' + (b.serviceCode||'') + '</td><td>' + (b.serviceType||'') + '</td><td>' + (b.location||'') + '</td><td>' + (b.scheduledAt ? new Date(b.scheduledAt).toLocaleString() : '—') + '</td><td>' + badge(b.status || 'PENDING') + '</td><td style="font-size:11px;">' + (b.paymentStatus||'N/A') + '</td><td class="action-cell">' + actions.join('') + '</td></tr>';
+              }).join('');
+          var tp = res.totalPages || 1;
+          document.getElementById('bookings-pag').innerHTML = tp > 1 ? Array.from({length:tp}, function(_,i){ return '<button class="admin-btn ' + (i===page?'admin-btn-action':'') + '" onclick="loadBookings(' + i + ')">' + (i+1) + '</button>'; }).join('') : '';
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      async function bookingAction(id, action) {
+        var labels = { complete: 'Complete', cancel: 'Cancel', delete: 'Delete' };
+        var msg = action === 'delete' ? 'Permanently DELETE booking #' + id + '?' : labels[action] + ' booking #' + id + '?';
+        if (!confirm(msg)) return;
+        setStatus(labels[action] + 'ing booking...', 'info');
+        try {
+          if (action === 'complete') {
+            await api('/api/v1/bookings/' + id + '/complete', { method: 'POST' });
+          } else {
+            var resp = await fetch(API_BASE + DASHBOARD_API + '/bookings/' + id + '/' + action, { method: 'POST' });
+            var data = await resp.json();
+            if (!resp.ok) throw new Error(data.error || 'Failed');
+          }
+          setStatus(labels[action] + ' successful.', 'success');
+          loadBookings(bp);
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      // === PAYMENTS (CRUD) ===
+      var pp = 0;
+      async function loadPayments(page) { pp = page;
+        try {
+          var res = await api('/api/v1/admin/payments?page=' + page + '&size=20');
+          var items = res.content || [];
+          var tbody = document.getElementById('payments-body');
+          tbody.innerHTML = items.length === 0
+            ? '<tr><td colspan="9" style="color:var(--metallic);padding:16px;text-align:center;">No payments.</td></tr>'
+            : items.map(function(p) {
+                var actions = [];
+                if (p.status === 'SUCCEEDED' || p.status === 'PENDING') {
+                  actions.push('<button class="admin-btn admin-btn-danger" onclick="paymentAction(' + p.id + ',\'void\')">Void</button>');
+                  actions.push('<button class="admin-btn admin-btn-warn" onclick="paymentAction(' + p.id + ',\'refund\')">Refund</button>');
+                }
+                actions.push('<button class="admin-btn admin-btn-danger" onclick="paymentAction(' + p.id + ',\'delete\')">Delete</button>');
+                return '<tr><td>' + p.id + '</td><td style="font-family:monospace;font-size:11px;">' + (p.reference||'') + '</td><td style="font-family:monospace;">' + String(p.clientId||'').slice(0,8) + '</td><td>' + (p.purpose||'') + '</td><td style="color:var(--accent);font-weight:500;">' + money(p.amount) + '</td><td>' + badge(p.status || 'PENDING') + '</td><td>' + (p.gateway||'') + '</td><td style="font-size:11px;">' + (p.createdAt ? new Date(p.createdAt).toLocaleString() : '—') + '</td><td class="action-cell">' + actions.join('') + '</td></tr>';
+              }).join('');
+          var tp = res.totalPages || 1;
+          document.getElementById('payments-pag').innerHTML = tp > 1 ? Array.from({length:tp}, function(_,i){ return '<button class="admin-btn ' + (i===page?'admin-btn-action':'') + '" onclick="loadPayments(' + i + ')">' + (i+1) + '</button>'; }).join('') : '';
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      async function paymentAction(id, action) {
+        var labels = { void: 'Void', refund: 'Refund', delete: 'Delete' };
+        var msg = action === 'delete' ? 'Permanently DELETE payment #' + id + '?' : labels[action] + ' payment #' + id + '?';
+        if (!confirm(msg)) return;
+        setStatus(labels[action] + 'ing payment...', 'info');
+        try {
+          var resp = await fetch(API_BASE + DASHBOARD_API + '/payments/' + id + '/' + action, { method: 'POST' });
+          var data = await resp.json();
+          if (!resp.ok) throw new Error(data.error || 'Failed');
+          setStatus(labels[action] + ' successful.', 'success');
+          loadPayments(pp);
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      // === PLANS (FULL CRUD) ===
+      async function loadAllPlans() {
+        setStatus('Loading plans...', 'info');
+        try {
+          var plans = await api('/api/v1/membership/plans', { method: 'GET' });
+          if (!Array.isArray(plans)) plans = [];
+          var tbody = document.getElementById('all-plans-body');
+          tbody.innerHTML = plans.length === 0
+            ? '<tr><td colspan="8" style="color:var(--metallic);padding:16px;text-align:center;">No plans. Create one!</td></tr>'
+            : plans.map(function(p) {
+                return '<tr><td>' + p.id + '</td><td style="font-weight:500;">' + p.name + '</td><td>' + money(p.monthlyPrice) + '</td><td>' + (p.creditsPerMonth||0) + '</td><td>' + (p.freeWashes||0) + '</td><td>' + (p.isActive ? badge('ACTIVE') : badge('INACTIVE', 'cancelled')) + '</td><td>' + (p.discountEligible ? (p.discountPercentage||0) + '%' : '—') + '</td>' +
+                  '<td class="action-cell">' +
+                    '<button class="admin-btn admin-btn-action" onclick="editPlan(' + JSON.stringify(p).replace(/"/g, '&quot;') + ')">Edit</button>' +
+                    '<button class="admin-btn admin-btn-danger" onclick="deletePlan(' + p.id + ',\'' + p.name + '\')">Delete</button>' +
+                  '</td></tr>';
+              }).join('');
+          setStatus(plans.length + ' plan(s) loaded.', 'info');
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      function openPlanModal() {
+        document.getElementById('plan-modal-title').textContent = 'Create Plan';
+        document.getElementById('plan-id').value = '';
+        document.getElementById('plan-name').value = '';
+        document.getElementById('plan-desc').value = '';
+        document.getElementById('plan-price').value = '';
+        document.getElementById('plan-credits').value = '';
+        document.getElementById('plan-free-washes').value = '';
+        document.getElementById('plan-discount').value = '';
+        document.getElementById('plan-active').checked = true;
+        document.getElementById('plan-discount-eligible').checked = false;
+        document.getElementById('plan-save-btn').textContent = 'Create Plan';
+        document.getElementById('plan-modal').classList.add('open');
+      }
+
+      function closePlanModal() {
+        document.getElementById('plan-modal').classList.remove('open');
+      }
+
+      function editPlan(p) {
+        document.getElementById('plan-modal-title').textContent = 'Edit Plan';
+        document.getElementById('plan-id').value = p.id;
+        document.getElementById('plan-name').value = p.name || '';
+        document.getElementById('plan-desc').value = p.description || '';
+        document.getElementById('plan-price').value = p.monthlyPrice || '';
+        document.getElementById('plan-credits').value = p.creditsPerMonth || 0;
+        document.getElementById('plan-free-washes').value = p.freeWashes || 0;
+        document.getElementById('plan-discount').value = p.discountPercentage || 0;
+        document.getElementById('plan-active').checked = p.isActive;
+        document.getElementById('plan-discount-eligible').checked = p.discountEligible;
+        document.getElementById('plan-save-btn').textContent = 'Update Plan';
+        document.getElementById('plan-modal').classList.add('open');
+      }
+
+      async function savePlan() {
+        var id = document.getElementById('plan-id').value;
+        var isEdit = !!id;
+        var body = {
+          name: document.getElementById('plan-name').value.trim(),
+          description: document.getElementById('plan-desc').value.trim(),
+          monthlyPrice: parseFloat(document.getElementById('plan-price').value) || 0,
+          creditsPerMonth: parseInt(document.getElementById('plan-credits').value) || 0,
+          freeWashes: parseInt(document.getElementById('plan-free-washes').value) || 0,
+          discountPercentage: parseFloat(document.getElementById('plan-discount').value) || 0,
+          isActive: document.getElementById('plan-active').checked,
+          discountEligible: document.getElementById('plan-discount-eligible').checked
+        };
+        if (!body.name) { setStatus('Plan name is required.', 'error'); return; }
+        setStatus(isEdit ? 'Updating plan...' : 'Creating plan...', 'info');
+        try {
+          var url = '/api/v1/membership/plans' + (isEdit ? '/' + id : '');
+          var method = isEdit ? 'PUT' : 'POST';
+          await api(url, { method: method, body: JSON.stringify(body) });
+          closePlanModal();
+          setStatus(isEdit ? 'Plan updated.' : 'Plan created.', 'success');
+          loadAllPlans();
+          loadDashboard();
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      async function deletePlan(id, name) {
+        if (!confirm('Delete plan "' + name + '" (ID: ' + id + ')? This cannot be undone.')) return;
+        setStatus('Deleting plan...', 'info');
+        try {
+          await api('/api/v1/membership/plans/' + id, { method: 'DELETE' });
+          setStatus('Plan deleted.', 'success');
+          loadAllPlans();
+          loadDashboard();
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      // === USERS ===
+      async function loadUsers() {
+        setStatus('Loading users...', 'info');
+        try {
+          var resp = await fetch(API_BASE + DASHBOARD_API + '/users', { method: 'GET' });
+          var data = await resp.json();
+          if (!resp.ok) throw new Error(data.error || 'Failed');
+          var users = data.users || [];
+          var tbody = document.getElementById('users-body');
+          tbody.innerHTML = users.length === 0
+            ? '<tr><td colspan="7" style="color:var(--metallic);padding:16px;text-align:center;">No users.</td></tr>'
+            : users.map(function(u) {
+                var roleOptions = ['CLIENT', 'ADMIN', 'OPERATOR'].map(function(r) {
+                  return '<option value="' + r + '"' + (u.role === r ? ' selected' : '') + '>' + r + '</option>';
+                }).join('');
+                return '<tr>' +
+                  '<td style="font-family:monospace;font-size:11px;">' + String(u.id||'').slice(0,12) + '...</td>' +
+                  '<td>' + u.email + '</td>' +
+                  '<td>' + badge(u.role === 'ADMIN' ? 'admin' : 'client') + '</td>' +
+                  '<td>' + (u.email_verified ? '✔' : '✖') + '</td>' +
+                  '<td>' + (u.is_active ? '✔' : '✖') + '</td>' +
+                  '<td style="font-size:11px;">' + (u.created_at ? new Date(u.created_at).toLocaleDateString() : '—') + '</td>' +
+                  '<td class="action-cell">' +
+                    '<select class="user-role-select" onchange="changeUserRole(\'' + u.id + '\', this.value)" style="width:90px;">' + roleOptions + '</select>' +
+                    '<button class="admin-btn admin-btn-danger" onclick="deleteUser(\'' + u.id + '\',\'' + u.email + '\')">Delete</button>' +
+                  '</td></tr>';
+              }).join('');
+          setStatus(users.length + ' user(s) loaded.', 'info');
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      async function changeUserRole(userId, newRole) {
+        if (!confirm('Change role to ' + newRole + '?')) { loadUsers(); return; }
+        setStatus('Updating role...', 'info');
+        try {
+          var resp = await fetch(API_BASE + DASHBOARD_API + '/users/' + userId + '/role', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ role: newRole })
+          });
+          var data = await resp.json();
+          if (!resp.ok) throw new Error(data.error || 'Failed');
+          setStatus('Role updated to ' + newRole + '.', 'success');
+          loadUsers();
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      async function deleteUser(userId, email) {
+        if (!confirm('Permanently DELETE user ' + email + '?\n\nThis will remove ALL data (profile, memberships, bookings, payments).')) return;
+        setStatus('Deleting user...', 'info');
+        try {
+          var resp = await fetch(API_BASE + '/api/dashboard/sql/delete-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: userId })
+          });
+          var data = await resp.json();
+          if (!resp.ok) throw new Error(data.error || 'Failed');
+          setStatus(data.message || 'User deleted.', 'success');
+          loadUsers();
+          loadDashboard();
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      // === EXPIRING ===
+      async function loadExpiring(days) {
+        setStatus('Loading memberships expiring in ' + days + ' days...', 'info');
+        try {
+          var data = await api('/api/v1/admin/memberships/expiring/' + days);
+          document.getElementById('expiring-body').innerHTML = (Array.isArray(data) && data.length)
+            ? data.map(function(m) { return '<tr><td style="font-family:monospace;">' + String(m.clientId||'').slice(0,8) + '</td><td style="font-weight:500;">' + (m.planName||'') + '</td><td>' + (m.expiryDate ? new Date(m.expiryDate).toLocaleDateString() : '—') + '</td><td style="color:' + (m.daysUntilExpiry <= 3 ? '#e74c3c' : '#e67e22') + ';font-weight:600;">' + (m.daysUntilExpiry||0) + ' days</td><td>' + (m.creditsRemaining||0) + '</td><td>' + (m.autoRenew ? 'Yes' : '<span style="color:#e74c3c;">No</span>') + '</td></tr>'; }).join('')
+            : '<tr><td colspan="6" style="color:var(--metallic);padding:16px;text-align:center;">No memberships expiring in ' + days + ' days.</td></tr>';
+          setStatus(data.length + ' membership(s) expiring in ' + days + ' days.', 'info');
+        } catch(e) { setStatus(e.message, 'error'); }
+      }
+
+      (function() {
+        var btns = document.getElementById('expiring-btns');
+        if (!btns) return;
+        [1,3,7,14,30].forEach(function(d) {
+          var b = document.createElement('button');
+          b.className = 'admin-btn admin-btn-action';
+          b.textContent = d + ' Day' + (d>1?'s':'');
+          b.onclick = function() { loadExpiring(d); };
+          btns.appendChild(b);
+        });
+      })();
+
+      // === LOGIN BUTTON ===
+      (function() {
+        var btn = document.getElementById('login-btn'), token = getToken();
+        if (!btn) return;
+        if (token) {
+          btn.textContent = isAdmin() ? 'Logout (Admin)' : 'Logout';
+          btn.href = '#';
+          btn.onclick = function(e) { e.preventDefault(); localStorage.removeItem(AK); localStorage.removeItem(RK); localStorage.removeItem(UK); window.location.href = './index.html'; };
+        }
+      })();
+
+      // === THEME ===
+      (function() {
+        var b = document.getElementById('theme-toggle-btn'), html = document.documentElement;
+        var t = localStorage.getItem('int216d-theme') || 'dark';
+        html.setAttribute('data-theme', t);
+        if (b) { b.textContent = t === 'dark' ? 'Dark' : 'Light'; b.addEventListener('click', function() { var n = (html.getAttribute('data-theme')||'dark') === 'dark' ? 'light' : 'dark'; html.setAttribute('data-theme', n); localStorage.setItem('int216d-theme', n); b.textContent = n === 'dark' ? 'Dark' : 'Light'; }); }
+      })();
+
+      // === MOBILE MENU ===
+      (function() {
+        var t = document.getElementById('menu-toggle-btn'), n = document.getElementById('main-nav'), l = document.getElementById('main-nav-links');
+        if (!t || !n) return;
+        t.addEventListener('click', function() { var o = n.classList.toggle('menu-open'); t.setAttribute('aria-expanded', o?'true':'false'); t.textContent = o?'Close':'Menu'; });
+        if (l) l.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { if (window.innerWidth <= 768) { n.classList.remove('menu-open'); } }); });
+      })();
+
+      // Close modal on overlay click
+      document.getElementById('plan-modal').addEventListener('click', function(e) { if (e.target === this) closePlanModal(); });
+    </script>
+  </body>
+</html>

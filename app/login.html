@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - INT216D CarWash</title>
+    <link rel="icon" type="image/png" href="./public/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px 40px; background: var(--obsidian); }
+      .auth-container { display: grid; grid-template-columns: 1fr 1fr; max-width: 900px; width: 100%; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; overflow: hidden; }
+      .auth-panel { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; }
+      .auth-panel:first-child { border-right: 1px solid var(--panel-border); }
+      .auth-panel.register-panel { background: rgba(18, 179, 166, 0.04); }
+      .auth-eyebrow { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--metallic); margin: 0 0 6px; }
+      .auth-title { font-family: 'Instrument Serif', serif; font-size: 32px; margin: 0 0 8px; color: var(--ink); }
+      .auth-subtitle { font-size: 14px; color: var(--metallic); margin: 0 0 28px; line-height: 1.5; }
+      .auth-form { display: grid; gap: 14px; }
+      .auth-input { width: 100%; padding: 13px 15px; background: var(--obsidian); border: 1px solid var(--panel-border); border-radius: 10px; color: var(--ink); font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+      .auth-input:focus { border-color: var(--accent); }
+      .auth-input::placeholder { color: var(--metallic); opacity: 0.6; }
+      .auth-btn { width: 100%; padding: 13px; border-radius: 10px; border: 0; cursor: pointer; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; transition: opacity 0.2s, transform 0.2s; }
+      .auth-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+      .auth-btn-primary { background: var(--accent); color: #000; }
+      .auth-btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+      .auth-status { font-size: 13px; margin: 8px 0 0; min-height: 18px; }
+      .auth-status.success { color: var(--accent); }
+      .auth-status.error { color: #e74c3c; }
+      .auth-status.info { color: var(--metallic); }
+      .auth-divider { text-align: center; color: var(--metallic); font-size: 12px; margin: 8px 0; position: relative; }
+      .auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--panel-border); }
+      .auth-divider::before { left: 0; }
+      .auth-divider::after { right: 0; }
+        .auth-link { color: var(--accent); font-size: 13px; cursor: pointer; background: none; border: none; padding: 0; text-decoration: none; display: inline-block; }
+        .auth-link:hover { text-decoration: underline; }
+        .forgot-form { display: none; }
+        .forgot-form.active { display: grid; }
+        .login-form-wrap.active { display: block; }
+        .login-form-wrap.hidden { display: none; }
+      @media (max-width: 768px) {
+        .auth-container { grid-template-columns: 1fr; }
+        .auth-panel:first-child { border-right: 0; border-bottom: 1px solid var(--panel-border); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button id="menu-toggle-btn" class="menu-toggle-btn" type="button" aria-expanded="false" aria-controls="main-nav-links" aria-label="Open menu">Menu</button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./index.html#services" class="nav-link">Services</a>
+          <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+          <a href="./index.html#addons" class="nav-link">Pricing</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">Light</button>
+        <a href="./login.html" id="login-btn" class="pill-btn login-btn">Login</a>
+      </nav>
+
+      <div class="auth-page">
+        <div class="auth-container">
+          <!-- LOGIN PANEL -->
+          <div class="auth-panel">
+            <p class="auth-eyebrow">Welcome Back</p>
+            <h2 class="auth-title">Sign In</h2>
+            <p class="auth-subtitle">Enter your credentials to access your account and manage your bookings.</p>
+            <div class="login-form-wrap active" id="login-form-wrap">
+              <form id="login-form" class="auth-form" autocomplete="off">
+                <input id="li-email" class="auth-input" type="email" placeholder="Email address" required autocomplete="email" />
+                <input id="li-password" class="auth-input" type="password" placeholder="Password" required autocomplete="current-password" />
+                <button type="submit" class="auth-btn auth-btn-primary">Sign In</button>
+                <p id="login-status" class="auth-status info"></p>
+              </form>
+              <button type="button" id="forgot-pw-link" class="auth-link" style="margin-top:4px;">Forgot Password?</button>
+            </div>
+            <div class="forgot-form auth-form" id="forgot-form">
+              <p class="auth-eyebrow">Password Reset</p>
+              <h2 class="auth-title" style="font-size:24px;">Forgot Password</h2>
+              <p id="forgot-subtitle" class="auth-subtitle" style="margin-bottom:16px;">Enter your email and we'll send you a reset code.</p>
+              <input id="fp-email" class="auth-input" type="email" placeholder="Email address" required autocomplete="email" />
+              <button type="submit" id="fp-send" class="auth-btn auth-btn-primary">Send Reset Code</button>
+              <input id="fp-code" class="auth-input" type="text" inputmode="numeric" placeholder="Reset code from email" style="display:none;" />
+              <input id="fp-new-password" class="auth-input" type="password" placeholder="New password" minlength="8" style="display:none;" />
+              <button type="button" id="fp-reset" class="auth-btn auth-btn-outline" style="display:none;">Reset Password</button>
+              <p id="forgot-status" class="auth-status info"></p>
+              <button type="button" id="fp-back" class="auth-link" style="margin-top:4px;text-align:left;">Back to Sign In</button>
+            </div>
+          </div>
+
+          <!-- REGISTER PANEL -->
+          <div class="auth-panel register-panel">
+            <p class="auth-eyebrow">New Here?</p>
+            <h2 class="auth-title">Create Account</h2>
+            <p class="auth-subtitle">Don't have an account yet? Register below to start booking premium washes.</p>
+            <form id="register-form" class="auth-form" autocomplete="off">
+              <input id="re-email" class="auth-input" type="email" placeholder="Email address" required autocomplete="email" />
+              <input id="re-password" class="auth-input" type="password" placeholder="Password" required autocomplete="new-password" minlength="8" />
+              <p style="font-size:11px;color:var(--metallic);margin:-8px 0 0;">Min 8 characters, with a letter, number, and symbol.</p>
+              <button type="submit" class="auth-btn auth-btn-primary" style="background: transparent; border: 1px solid var(--accent); color: var(--accent);">Create Account</button>
+              <div class="auth-divider">verify email after</div>
+              <input id="re-otp" class="auth-input" type="text" inputmode="numeric" placeholder="OTP code from email" />
+              <button type="button" id="re-verify-btn" class="auth-btn auth-btn-outline">Verify OTP</button>
+              <button type="button" id="re-resend-btn" class="auth-btn auth-btn-outline" style="display:none;border-color:var(--metallic);color:var(--metallic);">Resend OTP</button>
+              <p id="register-status" class="auth-status info"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        var API_BASE = localStorage.getItem('int216d:apiBase') || '';
+        var ACCESS_TOKEN_KEY = 'int216d:accessToken';
+        var USER_ROLE_KEY = 'int216d:userRole';
+        var USER_ID_KEY = 'int216d:userId';
+        var USER_EMAIL_KEY = 'int216d:userEmail';
+
+        function setStatus(el, msg, type) {
+          el.textContent = msg;
+          el.className = 'auth-status ' + (type || 'info');
+        }
+
+        async function api(path, options) {
+          var token = localStorage.getItem(ACCESS_TOKEN_KEY);
+          var headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+          if (token) headers.Authorization = 'Bearer ' + token;
+          var resp = await fetch(API_BASE + path, Object.assign({}, options, { headers: headers, credentials: 'include' }));
+          var data = null;
+          try { data = await resp.json(); } catch (_) { data = null; }
+          if (!resp.ok) {
+            var msg = (data && (data.message || data.error)) || ('Request failed (' + resp.status + ')');
+            throw new Error(msg);
+          }
+          return data;
+        }
+
+        function decodePayload(token) {
+          if (!token) return null;
+          var parts = token.split('.');
+          if (parts.length < 2) return null;
+          try {
+            var raw = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+            var pad = raw + '='.repeat((4 - (raw.length % 4)) % 4);
+            return JSON.parse(atob(pad));
+          } catch (_) { return null; }
+        }
+
+        function saveAuth(data) {
+          if (!data || !data.accessToken) return;
+          localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+          var role = data.role || (decodePayload(data.accessToken) || {}).role || null;
+          if (role) localStorage.setItem(USER_ROLE_KEY, role);
+          if (data.userId) localStorage.setItem(USER_ID_KEY, String(data.userId));
+        }
+
+        // --- LOGIN ---
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var status = document.getElementById('login-status');
+          var btn = this.querySelector('button');
+          setStatus(status, 'Signing in...', 'info');
+          btn.disabled = true;
+
+          api('/api/v1/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: document.getElementById('li-email').value.trim(),
+              password: document.getElementById('li-password').value
+            })
+          }).then(function(res) {
+            saveAuth(res.data);
+            localStorage.setItem(USER_EMAIL_KEY, document.getElementById('li-email').value.trim());
+            setStatus(status, 'Login successful! Redirecting...', 'success');
+            setTimeout(function() { window.location.href = './profile.html'; }, 800);
+          }).catch(function(err) {
+            setStatus(status, err.message, 'error');
+            // If account already exists, offer to resend OTP
+            if (err.message.indexOf('already exists') >= 0) {
+              document.getElementById('re-otp').focus();
+              document.getElementById('re-resend-btn').style.display = '';
+              setStatus(status, err.message + ' Enter OTP or resend.', 'info');
+            }
+          }).finally(function() { btn.disabled = false; });
+        });
+
+        // --- REGISTER ---
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var status = document.getElementById('register-status');
+          var btn = this.querySelector('button[type="submit"]');
+          var email = document.getElementById('re-email').value.trim();
+          setStatus(status, 'Creating account...', 'info');
+          btn.disabled = true;
+
+          api('/api/v1/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: email,
+              password: document.getElementById('re-password').value
+            })
+          }).then(function(res) {
+            localStorage.setItem(USER_EMAIL_KEY, email);
+            setStatus(status, 'Account created! Check your email (' + email + ') for the OTP code.', 'success');
+            document.getElementById('re-otp').focus();
+          }).catch(function(err) {
+            setStatus(status, err.message, 'error');
+            if (err.message.indexOf('already exists') >= 0) {
+              document.getElementById('re-otp').focus();
+              document.getElementById('re-resend-btn').style.display = '';
+              setStatus(status, err.message + ' Enter OTP or resend.', 'info');
+            }
+          }).finally(function() { btn.disabled = false; });
+        });
+
+        // --- VERIFY OTP ---
+        document.getElementById('re-verify-btn').addEventListener('click', function() {
+          var status = document.getElementById('register-status');
+          var btn = this;
+          setStatus(status, 'Verifying OTP...', 'info');
+          btn.disabled = true;
+
+          api('/api/v1/auth/verify-email', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: document.getElementById('re-email').value.trim(),
+              otp: document.getElementById('re-otp').value.trim()
+            })
+          }).then(function() {
+            setStatus(status, 'Email verified! You can now sign in on the left panel.', 'success');
+            document.getElementById('re-resend-btn').style.display = 'none';
+          }).catch(function(err) {
+            setStatus(status, err.message, 'error');
+          }).finally(function() { btn.disabled = false; });
+        });
+
+        // --- RESEND OTP ---
+        document.getElementById('re-resend-btn').addEventListener('click', function() {
+          var status = document.getElementById('register-status');
+          var btn = this;
+          var email = document.getElementById('re-email').value.trim();
+          if (!email) { setStatus(status, 'Enter your email first.', 'error'); return; }
+          setStatus(status, 'Sending new OTP...', 'info');
+          btn.disabled = true;
+
+          api('/api/v1/auth/verify-email/resend', {
+            method: 'POST',
+            body: JSON.stringify({ email: email })
+          }).then(function() {
+            setStatus(status, 'New OTP sent! Check your email (' + email + ').', 'success');
+            document.getElementById('re-otp').focus();
+          }).catch(function(err) {
+            setStatus(status, err.message, 'error');
+          }).finally(function() { btn.disabled = false; });
+        });
+
+        // --- FORGOT PASSWORD ---
+        var fpEmail = document.getElementById('fp-email');
+        var fpCode = document.getElementById('fp-code');
+        var fpNewPw = document.getElementById('fp-new-password');
+        var fpSend = document.getElementById('fp-send');
+        var fpReset = document.getElementById('fp-reset');
+        var fpStatus = document.getElementById('forgot-status');
+        var fpSubtitle = document.getElementById('forgot-subtitle');
+        var forgotForm = document.getElementById('forgot-form');
+        var loginWrap = document.getElementById('login-form-wrap');
+        var fpBack = document.getElementById('fp-back');
+
+        document.getElementById('forgot-pw-link').addEventListener('click', function() {
+          loginWrap.classList.add('hidden');
+          loginWrap.classList.remove('active');
+          forgotForm.classList.add('active');
+          fpEmail.focus();
+        });
+
+        fpBack.addEventListener('click', function() {
+          forgotForm.classList.remove('active');
+          loginWrap.classList.remove('hidden');
+          loginWrap.classList.add('active');
+          resetForgotForm();
+        });
+
+        function resetForgotForm() {
+          fpEmail.value = '';
+          fpCode.value = '';
+          fpNewPw.value = '';
+          fpCode.style.display = 'none';
+          fpNewPw.style.display = 'none';
+          fpReset.style.display = 'none';
+          fpSend.textContent = 'Send Reset Code';
+          fpSend.style.display = '';
+          fpSubtitle.textContent = 'Enter your email and we\'ll send you a reset code.';
+          setStatus(fpStatus, '', 'info');
+        }
+
+        function showResetFields() {
+          fpCode.style.display = '';
+          fpNewPw.style.display = '';
+          fpReset.style.display = '';
+          fpSend.textContent = 'Resend Code';
+          fpSubtitle.textContent = 'Enter the reset code from your email and your new password.';
+          fpCode.focus();
+        }
+
+        fpSend.addEventListener('click', function() {
+          var email = fpEmail.value.trim();
+          if (!email) { setStatus(fpStatus, 'Enter your email first.', 'error'); return; }
+          setStatus(fpStatus, 'Sending reset code...', 'info');
+          fpSend.disabled = true;
+
+          api('/api/v1/auth/password-reset/request', {
+            method: 'POST',
+            body: JSON.stringify({ email: email })
+          }).then(function() {
+            setStatus(fpStatus, 'Reset code sent! Check your email (' + email + ').', 'success');
+            showResetFields();
+          }).catch(function(err) {
+            setStatus(fpStatus, err.message, 'error');
+          }).finally(function() { fpSend.disabled = false; });
+        });
+
+        fpReset.addEventListener('click', function() {
+          var email = fpEmail.value.trim();
+          var code = fpCode.value.trim();
+          var newPw = fpNewPw.value;
+          if (!code || !newPw) { setStatus(fpStatus, 'Enter the reset code and new password.', 'error'); return; }
+          if (newPw.length < 8) { setStatus(fpStatus, 'Password must be at least 8 characters.', 'error'); return; }
+          setStatus(fpStatus, 'Resetting password...', 'info');
+          fpReset.disabled = true;
+
+          api('/api/v1/auth/password-reset/confirm', {
+            method: 'POST',
+            body: JSON.stringify({ email: email, resetCode: code, newPassword: newPw })
+          }).then(function() {
+            setStatus(fpStatus, 'Password reset! You can now sign in.', 'success');
+            setTimeout(function() {
+              fpBack.click();
+              // Pre-fill login email
+              document.getElementById('li-email').value = email;
+            }, 1500);
+          }).catch(function(err) {
+            setStatus(fpStatus, err.message, 'error');
+          }).finally(function() { fpReset.disabled = false; });
+        });
+
+        // --- THEME TOGGLE ---
+        (function() {
+          var btn = document.getElementById('theme-toggle-btn');
+          var html = document.documentElement;
+          function apply(t) {
+            html.setAttribute('data-theme', t);
+            localStorage.setItem('int216d-theme', t);
+            if (btn) btn.textContent = t === 'dark' ? 'Dark' : 'Light';
+          }
+          var saved = localStorage.getItem('int216d-theme') || 'dark';
+          apply(saved);
+          if (btn) btn.addEventListener('click', function() {
+            var cur = html.getAttribute('data-theme') || 'dark';
+            apply(cur === 'dark' ? 'light' : 'dark');
+          });
+        })();
+
+        // --- MOBILE MENU ---
+        (function() {
+          var toggle = document.getElementById('menu-toggle-btn');
+          var nav = document.getElementById('main-nav');
+          var links = document.getElementById('main-nav-links');
+          if (!toggle || !nav) return;
+          function close() {
+            nav.classList.remove('menu-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.textContent = 'Menu';
+          }
+          toggle.addEventListener('click', function() {
+            var open = nav.classList.toggle('menu-open');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            toggle.textContent = open ? 'Close' : 'Menu';
+          });
+          if (links) links.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() { if (window.innerWidth <= 768) close(); });
+          });
+        })();
+
+        // --- LOGIN BUTTON HYDRATION ---
+        (function() {
+          var btn = document.getElementById('login-btn');
+          var token = localStorage.getItem(ACCESS_TOKEN_KEY);
+          if (!btn) return;
+          if (token) {
+            btn.textContent = 'Logout';
+            btn.href = '#';
+            btn.onclick = function(e) {
+              e.preventDefault();
+              localStorage.removeItem(ACCESS_TOKEN_KEY);
+              localStorage.removeItem(USER_ROLE_KEY);
+              localStorage.removeItem(USER_ID_KEY);
+              window.location.reload();
+            };
+          } else {
+            btn.textContent = 'Login';
+            btn.href = './login.html';
+            btn.onclick = null;
+          }
+        })();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile - INT216D CarWash</title>
+    <link rel="icon" type="image/png" href="./public/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .profile-page { min-height: 100vh; padding: 120px 24px 60px; background: var(--obsidian); }
+      .profile-container { max-width: 700px; margin: 0 auto; }
+      .profile-header { margin-bottom: 32px; }
+      .profile-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+      .profile-card h3 { font-family: 'Instrument Serif', serif; font-size: 22px; margin: 0 0 20px; color: var(--ink); }
+      .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .profile-field label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--metallic); display: block; margin-bottom: 4px; }
+      .profile-field .value { font-size: 15px; color: var(--ink); font-weight: 500; padding: 10px 14px; background: var(--obsidian); border: 1px solid var(--panel-border); border-radius: 8px; }
+      .profile-field input { width: 100%; padding: 10px 14px; background: var(--obsidian); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 15px; box-sizing: border-box; outline: none; }
+      .profile-field input:focus { border-color: var(--accent); }
+      .profile-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+      .profile-btn { padding: 10px 22px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; border: 0; font-family: 'Inter', sans-serif; transition: opacity 0.2s, transform 0.2s; }
+      .profile-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+      .profile-btn-primary { background: var(--accent); color: #000; }
+      .profile-btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+      .profile-status { font-size: 13px; margin-top: 10px; min-height: 18px; }
+      .profile-status.success { color: var(--accent); }
+      .profile-status.error { color: #e74c3c; }
+      .profile-status.info { color: var(--metallic); }
+      .profile-badge { display: inline-block; padding: 4px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+      .profile-badge.active { background: rgba(18,179,166,0.15); color: var(--accent); }
+      .profile-badge.empty { background: rgba(231,76,60,0.15); color: #e74c3c; }
+      .empty-state { text-align: center; padding: 40px 20px; color: var(--metallic); }
+      .empty-state h3 { color: var(--ink); margin-bottom: 8px; }
+      @media (max-width: 500px) {
+        .profile-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button id="menu-toggle-btn" class="menu-toggle-btn" type="button" aria-expanded="false" aria-controls="main-nav-links" aria-label="Open menu">Menu</button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./index.html#services" class="nav-link">Services</a>
+          <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+          <a href="./index.html#addons" class="nav-link">Pricing</a>
+          <a href="./profile.html" class="nav-link" id="nav-profile-link" style="display:none;">Profile</a>
+          <a href="./receipts.html" class="nav-link">Receipts</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">Light</button>
+        <a href="./login.html" id="login-btn" class="pill-btn login-btn">Login</a>
+      </nav>
+
+      <div class="profile-page">
+        <div class="profile-container">
+          <div class="profile-header">
+            <p class="auth-eyebrow">Account</p>
+            <h2 class="auth-title">My Profile</h2>
+            <p id="profile-welcome" class="auth-subtitle">Loading your account...</p>
+          </div>
+
+          <!-- Profile Card -->
+          <div class="profile-card" id="profile-card" style="display:none;">
+            <h3>Personal Details</h3>
+            <div class="profile-grid" id="profile-grid"></div>
+            <div class="profile-actions">
+              <button id="profile-edit-btn" class="profile-btn profile-btn-outline">Edit Profile</button>
+              <button id="profile-save-btn" class="profile-btn profile-btn-primary" style="display:none;">Save Changes</button>
+              <button id="profile-cancel-btn" class="profile-btn profile-btn-outline" style="display:none;">Cancel</button>
+            </div>
+            <p id="profile-status" class="profile-status info"></p>
+          </div>
+
+          <!-- Empty Profile -->
+          <div class="profile-card" id="profile-empty" style="display:none;">
+            <div class="empty-state">
+              <h3>Welcome!</h3>
+              <p>You haven't set up your profile yet. Create one to start booking washes.</p>
+              <button id="create-profile-btn" class="profile-btn profile-btn-primary" style="margin-top:12px;">Create Profile</button>
+            </div>
+          </div>
+
+          <!-- Create Profile Form -->
+          <div class="profile-card" id="profile-create-form" style="display:none;">
+            <h3>Create Your Profile</h3>
+            <div class="profile-grid">
+              <div class="profile-field"><label>First Name</label><input id="cp-firstname" placeholder="First name" /></div>
+              <div class="profile-field"><label>Last Name</label><input id="cp-lastname" placeholder="Last name" /></div>
+              <div class="profile-field"><label>Phone</label><input id="cp-phone" placeholder="Phone number" /></div>
+              <div class="profile-field"><label>ID Number</label><input id="cp-idnumber" placeholder="ID number" /></div>
+              <div class="profile-field"><label>Date of Birth</label><input id="cp-dob" type="date" /></div>
+            </div>
+            <div class="profile-actions">
+              <button id="cp-submit" class="profile-btn profile-btn-primary">Submit</button>
+              <button id="cp-cancel" class="profile-btn profile-btn-outline">Cancel</button>
+            </div>
+            <p id="cp-status" class="profile-status info"></p>
+          </div>
+
+          <!-- Membership Card -->
+          <div class="profile-card" id="membership-card" style="display:none;">
+            <h3>Membership</h3>
+            <div class="profile-grid" id="membership-grid"></div>
+          </div>
+
+          <!-- Payment History -->
+          <div class="profile-card" id="payments-card" style="display:none;">
+            <h3>Payment History</h3>
+            <div id="payments-list" style="display:grid;gap:10px;"></div>
+            <p id="payments-status" class="profile-status info"></p>
+          </div>
+
+          <!-- Saved Addresses -->
+          <div class="profile-card" id="addresses-card" style="display:none;">
+            <h3>Saved Locations</h3>
+            <div id="addresses-list" style="display:grid;gap:10px;"></div>
+            <div class="profile-actions" style="margin-top:12px;">
+              <button id="add-address-btn" class="profile-btn profile-btn-outline">+ Add Address</button>
+            </div>
+            <div id="address-form" style="display:none;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div class="profile-field"><label>Street</label><input id="ad-street" placeholder="123 Main St" /></div>
+              <div class="profile-field"><label>City</label><input id="ad-city" placeholder="City" /></div>
+              <div class="profile-field"><label>Province</label><input id="ad-province" placeholder="Province" /></div>
+              <div class="profile-field"><label>Postal Code</label><input id="ad-postal" placeholder="2000" /></div>
+              <button id="ad-save" class="profile-btn profile-btn-primary" style="grid-column:1/-1;">Save Address</button>
+            </div>
+            <p id="addresses-status" class="profile-status info"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        var API_BASE = localStorage.getItem('int216d:apiBase') || '';
+        var ACCESS_TOKEN_KEY = 'int216d:accessToken';
+        var USER_ROLE_KEY = 'int216d:userRole';
+        var USER_ID_KEY = 'int216d:userId';
+        var USER_EMAIL_KEY = 'int216d:userEmail';
+
+        function getToken() { return localStorage.getItem(ACCESS_TOKEN_KEY); }
+        function getRole() { return localStorage.getItem(USER_ROLE_KEY); }
+
+        async function api(path, opts) {
+          opts = opts || {};
+          var token = getToken();
+          var headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+          if (token) headers.Authorization = 'Bearer ' + token;
+          var resp = await fetch(API_BASE + path, Object.assign({}, opts, { headers: headers, credentials: 'include' }));
+          var data = null;
+          try { data = await resp.json(); } catch (_) { data = null; }
+          if (resp.status === 401) {
+            localStorage.removeItem(ACCESS_TOKEN_KEY);
+            localStorage.removeItem(USER_ROLE_KEY);
+            localStorage.removeItem(USER_ID_KEY);
+            window.location.href = './login.html';
+            return null;
+          }
+          if (!resp.ok) {
+            var msg = (data && (data.message || data.error)) || ('Request failed (' + resp.status + ')');
+            throw new Error(msg);
+          }
+          return data;
+        }
+
+        function setStatus(el, msg, type) {
+          el.textContent = msg;
+          el.className = 'profile-status ' + (type || 'info');
+        }
+
+        // Redirect if not logged in
+        if (!getToken()) {
+          document.getElementById('profile-welcome').textContent = 'Please sign in to view your profile.';
+          setTimeout(function() { window.location.href = './login.html'; }, 1500);
+          return;
+        }
+
+        // --- LOAD PROFILE ---
+        var loadedProfile = null;
+
+        function renderProfile(profile) {
+          loadedProfile = profile;
+          document.getElementById('profile-empty').style.display = 'none';
+          document.getElementById('profile-create-form').style.display = 'none';
+          var card = document.getElementById('profile-card');
+          card.style.display = '';
+
+          document.getElementById('profile-edit-btn').style.display = '';
+          document.getElementById('profile-save-btn').style.display = 'none';
+          document.getElementById('profile-cancel-btn').style.display = 'none';
+
+          var grid = document.getElementById('profile-grid');
+          var userEmail = localStorage.getItem(USER_EMAIL_KEY);
+          if (!userEmail) {
+            userEmail = '<a href=\"./login.html\" style=\"color:var(--accent);text-decoration:underline;\">Login again to see email</a>';
+          }
+          var grid = document.getElementById('profile-grid');
+          grid.innerHTML = [
+            { label: 'Email', value: userEmail },
+            { label: 'First Name', key: 'firstName' },
+            { label: 'Last Name', key: 'lastName' },
+            { label: 'Phone', key: 'phone' },
+            { label: 'ID Number', key: 'idNumber' },
+            { label: 'Date of Birth', key: 'dateOfBirth' }
+          ].map(function(f) {
+            var val = f.value || profile[f.key] || '—';
+            return '<div class="profile-field"><label>' + f.label + '</label><div class="value">' + val + '</div></div>';
+          }).join('');
+
+          document.getElementById('profile-welcome').innerHTML = 'Welcome, <strong style=\"color:var(--accent);\">' + (userEmail || (profile.firstName || 'User')) + '</strong>!';
+        }
+
+        function toEditable() {
+          var grid = document.getElementById('profile-grid');
+          var fields = ['firstName','lastName','phone','idNumber','dateOfBirth'];
+          var labels = ['First Name','Last Name','Phone','ID Number','Date of Birth'];
+          var p = loadedProfile || {};
+          grid.innerHTML = fields.map(function(f, i) {
+            var val = p[f] || '';
+            var type = f === 'dateOfBirth' ? 'date' : 'text';
+            return '<div class="profile-field"><label>' + labels[i] + '</label><input id="ep-' + f + '" type="' + type + '" value="' + val + '" /></div>';
+          }).join('');
+          document.getElementById('profile-edit-btn').style.display = 'none';
+          document.getElementById('profile-save-btn').style.display = '';
+          document.getElementById('profile-cancel-btn').style.display = '';
+        }
+
+        document.getElementById('profile-edit-btn').addEventListener('click', toEditable);
+
+        document.getElementById('profile-cancel-btn').addEventListener('click', function() {
+          if (loadedProfile) renderProfile(loadedProfile);
+        });
+
+        document.getElementById('profile-save-btn').addEventListener('click', function() {
+          var fields = ['firstName','lastName','phone','idNumber','dateOfBirth'];
+          var body = {};
+          fields.forEach(function(f) {
+            var el = document.getElementById('ep-' + f);
+            if (el) body[f] = el.value;
+          });
+          setStatus(document.getElementById('profile-status'), 'Saving...', 'info');
+          api('/api/v1/clients/me', { method: 'PUT', body: JSON.stringify(body) })
+            .then(function(res) {
+              renderProfile(res.data);
+              setStatus(document.getElementById('profile-status'), 'Profile updated.', 'success');
+            })
+            .catch(function(err) {
+              setStatus(document.getElementById('profile-status'), err.message, 'error');
+            });
+        });
+
+        // --- CREATE PROFILE ---
+        document.getElementById('create-profile-btn').addEventListener('click', function() {
+          document.getElementById('profile-empty').style.display = 'none';
+          document.getElementById('profile-create-form').style.display = '';
+        });
+
+        document.getElementById('cp-cancel').addEventListener('click', function() {
+          document.getElementById('profile-create-form').style.display = 'none';
+          document.getElementById('profile-empty').style.display = '';
+        });
+
+        document.getElementById('cp-submit').addEventListener('click', function() {
+          var body = {
+            firstName: document.getElementById('cp-firstname').value,
+            lastName: document.getElementById('cp-lastname').value,
+            phone: document.getElementById('cp-phone').value,
+            idNumber: document.getElementById('cp-idnumber').value,
+            dateOfBirth: document.getElementById('cp-dob').value || null
+          };
+          setStatus(document.getElementById('cp-status'), 'Creating profile...', 'info');
+          api('/api/v1/clients/me', { method: 'POST', body: JSON.stringify(body) })
+            .then(function(res) {
+              renderProfile(res.data);
+              setStatus(document.getElementById('profile-status'), 'Profile created!', 'success');
+            })
+            .catch(function(err) {
+              setStatus(document.getElementById('cp-status'), err.message, 'error');
+            });
+        });
+
+        // --- LOAD MEMBERSHIP ---
+        function loadMembership() {
+          api('/api/v1/membership', { method: 'GET' })
+            .then(function(m) {
+              var card = document.getElementById('membership-card');
+              card.style.display = '';
+              var grid = document.getElementById('membership-grid');
+              grid.innerHTML = [
+                { label: 'Plan', value: (m.plan && m.plan.name) || 'None' },
+                { label: 'Status', value: m.status || 'N/A' },
+                { label: 'Credits', value: String(m.creditsRemaining || 0) },
+                { label: 'Days Until Expiry', value: String(m.daysUntilExpiry || '—') },
+                { label: 'Auto Renew', value: m.autoRenew ? 'Yes' : 'No' },
+                { label: 'Expiry Date', value: m.expiryDate ? new Date(m.expiryDate).toLocaleDateString() : '—' }
+              ].map(function(item) {
+                return '<div class="profile-field"><label>' + item.label + '</label><div class="value">' + item.value + '</div></div>';
+              }).join('');
+            })
+            .catch(function() {
+              document.getElementById('membership-card').style.display = '';
+              document.getElementById('membership-grid').innerHTML = '<div style="grid-column:1/-1;color:var(--metallic);font-size:14px;">No membership found. <a href="./membership.html" style="color:var(--accent);">Subscribe now</a>.</div>';
+            });
+        }
+
+        // --- LOAD PAYMENT HISTORY ---
+        function loadPaymentHistory() {
+          api('/api/v1/payments/me', { method: 'GET' })
+            .then(function(payments) {
+              var card = document.getElementById('payments-card');
+              card.style.display = '';
+              var list = document.getElementById('payments-list');
+              if (!Array.isArray(payments) || payments.length === 0) {
+                list.innerHTML = '<div style="color:var(--metallic);font-size:13px;">No payments yet.</div>';
+                return;
+              }
+              list.innerHTML = payments.slice(0, 10).map(function(p) {
+                var date = p.createdAt ? new Date(p.createdAt).toLocaleString() : 'N/A';
+                var statusColor = p.status === 'SUCCEEDED' ? 'var(--accent)' : '#e74c3c';
+                return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--obsidian);border:1px solid var(--panel-border);border-radius:10px;">' +
+                  '<div>' +
+                    '<div style="font-size:14px;font-weight:500;color:var(--ink);">R' + Number(p.amount||0).toFixed(2) + '</div>' +
+                    '<div style="font-size:11px;color:var(--metallic);">' + (p.purpose || 'Payment') + ' — ' + date + '</div>' +
+                    '<div style="font-size:10px;color:var(--metallic);">Ref: ' + (p.reference || 'N/A') + '</div>' +
+                  '</div>' +
+                  '<div style="font-size:12px;font-weight:600;color:' + statusColor + ';">' + (p.status || 'PENDING') + '</div>' +
+                '</div>';
+              }).join('');
+            })
+            .catch(function() {
+              document.getElementById('payments-card').style.display = '';
+              document.getElementById('payments-list').innerHTML = '<div style="color:var(--metallic);font-size:13px;">Could not load payment history.</div>';
+            });
+        }
+
+        // --- LOAD ADDRESSES ---
+        function loadAddresses() {
+          api('/api/v1/clients/me/addresses', { method: 'GET' })
+            .then(function(addresses) {
+              var card = document.getElementById('addresses-card');
+              card.style.display = '';
+              var list = document.getElementById('addresses-list');
+              if (!Array.isArray(addresses) || addresses.length === 0) {
+                list.innerHTML = '<div style="color:var(--metallic);font-size:13px;">No saved addresses. Add one below.</div>';
+                return;
+              }
+              list.innerHTML = addresses.map(function(a, i) {
+                return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--obsidian);border:1px solid var(--panel-border);border-radius:10px;">' +
+                  '<div>' +
+                    '<div style="font-size:14px;font-weight:500;color:var(--ink);">' + (a.street || '') + '</div>' +
+                    '<div style="font-size:12px;color:var(--metallic);">' + (a.city || '') + ', ' + (a.province || '') + (a.postalCode ? ' - ' + a.postalCode : '') + '</div>' +
+                    (a.latitude ? '<div style="font-size:10px;color:var(--metallic);">GPS: ' + a.latitude + ', ' + a.longitude + '</div>' : '') +
+                  '</div>' +
+                  '<div><span class="profile-badge active" style="font-size:10px;">' + (a.primary ? 'Primary' : '') + '</span></div>' +
+                '</div>';
+              }).join('');
+            })
+            .catch(function() {
+              document.getElementById('addresses-card').style.display = '';
+              document.getElementById('addresses-list').innerHTML = '<div style="color:var(--metallic);font-size:13px;">Could not load addresses.</div>';
+            });
+        }
+
+        // --- ADDRESS FORM ---
+        document.getElementById('add-address-btn').addEventListener('click', function() {
+          var form = document.getElementById('address-form');
+          form.style.display = form.style.display === 'none' ? 'grid' : 'none';
+        });
+
+        document.getElementById('ad-save').addEventListener('click', function() {
+          var body = {
+            street: document.getElementById('ad-street').value || 'Main Street',
+            city: document.getElementById('ad-city').value || 'Sandton',
+            province: document.getElementById('ad-province').value || 'Gauteng',
+            postalCode: document.getElementById('ad-postal').value || '2000',
+            primary: true
+          };
+          setStatus(document.getElementById('addresses-status'), 'Saving...', 'info');
+          api('/api/v1/clients/me/addresses', { method: 'POST', body: JSON.stringify(body) })
+            .then(function() {
+              setStatus(document.getElementById('addresses-status'), 'Address saved!', 'success');
+              document.getElementById('address-form').style.display = 'none';
+              loadAddresses();
+            })
+            .catch(function(err) {
+              setStatus(document.getElementById('addresses-status'), err.message, 'error');
+            });
+        });
+
+        // --- LOAD ---
+        api('/api/v1/clients/me', { method: 'GET' })
+          .then(function(res) {
+            var userEmail = localStorage.getItem(USER_EMAIL_KEY) || 'your account';
+            if (!res || !res.data) {
+              document.getElementById('profile-empty').style.display = '';
+              document.getElementById('profile-welcome').innerHTML = 'Welcome, <strong style=\"color:var(--accent);\">' + userEmail + '</strong>! Set up your profile below.';
+              loadMembership();
+              loadPaymentHistory();
+              return;
+            }
+            renderProfile(res.data);
+            loadMembership();
+            loadPaymentHistory();
+            loadAddresses();
+          })
+          .catch(function(err) {
+            var userEmail = localStorage.getItem(USER_EMAIL_KEY) || 'your account';
+            if (err.message.indexOf('404') >= 0 || err.message.indexOf('not found') >= 0) {
+              document.getElementById('profile-empty').style.display = '';
+              document.getElementById('profile-welcome').innerHTML = 'Welcome, <strong style=\"color:var(--accent);\">' + userEmail + '</strong>! Set up your profile below.';
+              loadMembership();
+              loadPaymentHistory();
+              loadAddresses();
+            } else {
+              document.getElementById('profile-welcome').textContent = 'Error: ' + err.message;
+            }
+          });
+
+        // --- LOGIN BUTTON HYDRATION ---
+        (function() {
+          var btn = document.getElementById('login-btn');
+          var token = getToken();
+          var navProfile = document.getElementById('nav-profile-link');
+          if (!btn) return;
+          if (token) {
+            btn.textContent = 'Logout';
+            btn.href = '#';
+            btn.onclick = function(e) {
+              e.preventDefault();
+              localStorage.removeItem(ACCESS_TOKEN_KEY);
+              localStorage.removeItem(USER_ROLE_KEY);
+              localStorage.removeItem(USER_ID_KEY);
+              window.location.href = './index.html';
+            };
+            if (navProfile) navProfile.style.display = '';
+          } else {
+            btn.textContent = 'Login';
+            btn.href = './login.html';
+            btn.onclick = null;
+          }
+        })();
+
+        // --- THEME ---
+        (function() {
+          var b = document.getElementById('theme-toggle-btn');
+          var html = document.documentElement;
+          var t = localStorage.getItem('int216d-theme') || 'dark';
+          html.setAttribute('data-theme', t);
+          if (b) b.textContent = t === 'dark' ? 'Dark' : 'Light';
+          if (b) b.addEventListener('click', function() {
+            var cur = html.getAttribute('data-theme') || 'dark';
+            var next = cur === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('int216d-theme', next);
+            b.textContent = next === 'dark' ? 'Dark' : 'Light';
+          });
+        })();
+
+        // --- MOBILE MENU ---
+        (function() {
+          var t = document.getElementById('menu-toggle-btn'), n = document.getElementById('main-nav'), l = document.getElementById('main-nav-links');
+          if (!t || !n) return;
+          t.addEventListener('click', function() {
+            var o = n.classList.toggle('menu-open');
+            t.setAttribute('aria-expanded', o ? 'true' : 'false');
+            t.textContent = o ? 'Close' : 'Menu';
+          });
+          if (l) l.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() { if (window.innerWidth <= 768) { n.classList.remove('menu-open'); t.setAttribute('aria-expanded','false'); t.textContent='Menu'; } });
+          });
+        })();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Bay Wash - INT216D CarWash</title>
+    <link rel="icon" type="image/png" href="./public/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWix+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8U8U19+9F3R8v+0I4lQ5f6LQxK/5h2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button
+          id="menu-toggle-btn"
+          class="menu-toggle-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="main-nav-links"
+          aria-label="Open menu"
+        >
+          Menu
+        </button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./index.html#services" class="nav-link">Services</a>
+          <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+          <a href="./pricing.html" class="nav-link">Pricing</a>
+          <a href="./contact.html" class="nav-link">Contact</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">
+          Light
+        </button>
+        <a href="./index.html" id="login-btn" class="pill-btn login-btn">Back</a>
+      </nav>
+
+      <section id="hero" class="hero-section">
+        <div id="hero-three" class="hero-bg"></div>
+        <div class="hero-content">
+          <div id="hero-title" class="hero-title">
+            <div class="line-wrap"><h1 class="hero-line">Visit Our</h1></div>
+            <div class="line-wrap"><h1 class="hero-line accent">Bay Facility</h1></div>
+            <div class="line-wrap"><h1 class="hero-line">Book Wash</h1></div>
+          </div>
+          <p id="hero-subtitle" class="hero-subtitle">State-of-the-art facility with premium equipment and comfortable waiting area</p>
+        </div>
+      </section>
+
+      <section id="booking-form" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header" style="text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <p class="eyebrow">Easy Booking</p>
+            <h2>Schedule Bay Wash Service</h2>
+            <p style="margin-top: 16px; color: var(--metallic); font-size: 15px; line-height: 1.7;">
+              Visit our modern facility with professional equipment, comfortable waiting area, and premium detailing services
+            </p>
+          </div>
+
+          <div style="max-width: 700px; margin: 0 auto;">
+            <form id="bay-booking-form" style="display: grid; gap: 28px;">
+              <!-- Step 1: Location Selection -->
+              <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
+                <h3 style="margin: 0 0 20px; font-size: 18px; font-weight: 600;">Select Location</h3>
+
+                <label style="display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(18, 179, 166, 0.08); border-radius: 12px; cursor: pointer; margin-bottom: 12px; transition: all 0.3s ease; border: 2px solid var(--accent);">
+                  <input type="radio" name="location" value="johannesburg" checked style="width: 20px; height: 20px; cursor: pointer;" />
+                  <div>
+                    <p style="margin: 0; font-weight: 600;">Johannesburg Bay</p>
+                    <p style="margin: 4px 0 0; color: var(--metallic); font-size: 13px;">123 Main Street • Open 8AM - 8PM</p>
+                  </div>
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--panel); border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s ease;">
+                  <input type="radio" name="location" value="capetown" style="width: 20px; height: 20px; cursor: pointer;" />
+                  <div>
+                    <p style="margin: 0; font-weight: 600;">Cape Town Bay</p>
+                    <p style="margin: 4px 0 0; color: var(--metallic); font-size: 13px;">456 Waterfront Road • Open 7AM - 7PM</p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Step 2: Service Selection -->
+              <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
+                <h3 style="margin: 0 0 20px; font-size: 18px; font-weight: 600;">Select Service</h3>
+
+                <label style="display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(18, 179, 166, 0.08); border-radius: 12px; cursor: pointer; margin-bottom: 12px; transition: all 0.3s ease; border: 2px solid var(--accent);">
+                  <input type="radio" name="service" value="BASIC_WASH" checked style="width: 20px; height: 20px; cursor: pointer;" />
+                  <div>
+                    <p style="margin: 0; font-weight: 600;">Basic Bay Wash</p>
+                    <p style="margin: 4px 0 0; color: var(--metallic); font-size: 13px;">R399 • Exterior wash & dry • 15-20 min</p>
+                  </div>
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--panel); border-radius: 12px; cursor: pointer; margin-bottom: 12px; transition: all 0.3s ease; border: 2px solid transparent;">
+                  <input type="radio" name="service" value="DELUXE_WASH" style="width: 20px; height: 20px; cursor: pointer;" />
+                  <div>
+                    <p style="margin: 0; font-weight: 600;">Deluxe Bay Wash</p>
+                    <p style="margin: 4px 0 0; color: var(--metallic); font-size: 13px;">R649 • Wash + interior vacuum • 25-30 min</p>
+                  </div>
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--panel); border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s ease;">
+                  <input type="radio" name="service" value="PREMIUM_WASH" style="width: 20px; height: 20px; cursor: pointer;" />
+                  <div>
+                    <p style="margin: 0; font-weight: 600;">Premium Bay Wash</p>
+                    <p style="margin: 4px 0 0; color: var(--metallic); font-size: 13px;">R999 • Complete interior detail • 35-45 min</p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Step 3: Personal Information -->
+              <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
+                <h3 style="margin: 0 0 20px; font-size: 18px; font-weight: 600;">Your Information</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                  <div>
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Full Name</label>
+                    <input name="fullName" type="text" placeholder="Your name" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                  </div>
+                  <div>
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Email</label>
+                    <input name="email" type="email" placeholder="your@email.com" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                  </div>
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Phone Number</label>
+                  <input name="phone" type="tel" placeholder="+27 11 555 1234" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                </div>
+              </div>
+
+              <!-- Step 4: Booking Details -->
+              <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
+                <h3 style="margin: 0 0 20px; font-size: 18px; font-weight: 600;">Booking Details</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                  <div>
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Preferred Date</label>
+                    <input name="preferredDate" type="date" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                  </div>
+                  <div>
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Preferred Time</label>
+                    <input name="preferredTime" type="time" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                  </div>
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Vehicle Type</label>
+                  <select name="vehicleType" style="width: 100%; padding: 12px 16px; background: transparent; border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required>
+                    <option value="">Select your vehicle type</option>
+                    <option value="sedan">Sedan</option>
+                    <option value="suv">SUV</option>
+                    <option value="truck">Truck</option>
+                    <option value="van">Van</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Step 5: Additional Options -->
+              <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
+                <h3 style="margin: 0 0 20px; font-size: 18px; font-weight: 600;">Add-ons (Optional)</h3>
+
+                <label style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <input name="addOns" value="tire-shine" type="checkbox" style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span style="font-size: 14px;">Tire Shine (+R249)</span>
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <input name="addOns" value="engine-bay-cleaning" type="checkbox" style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span style="font-size: 14px;">Engine Bay Cleaning (+R599)</span>
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 12px;">
+                  <input name="addOns" value="air-freshener-premium" type="checkbox" style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span style="font-size: 14px;">Air Freshener Premium (+R199)</span>
+                </label>
+              </div>
+
+              <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
+                <h3 style="margin: 0 0 20px; font-size: 18px; font-weight: 600;">Service Options</h3>
+
+                <label style="display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(18, 179, 166, 0.08); border-radius: 12px; cursor: pointer; margin-bottom: 12px; border: 2px solid var(--accent);">
+                  <input type="radio" name="serviceOption" value="bring_car" checked style="width: 20px; height: 20px; cursor: pointer;" />
+                  <div>
+                    <p style="margin: 0; font-weight: 600;">Bring Your Car — Free</p>
+                    <p style="margin: 4px 0 0; color: var(--metallic); font-size: 13px;">Drive to the bay yourself. No extra charge.</p>
+                  </div>
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--panel); border-radius: 12px; cursor: pointer; margin-bottom: 12px; border: 2px solid transparent; transition: all 0.3s ease;">
+                  <input type="radio" name="serviceOption" value="collection" style="width: 20px; height: 20px; cursor: pointer;" />
+                  <div>
+                    <p style="margin: 0; font-weight: 600;">Car Collection — R150</p>
+                    <p style="margin: 4px 0 0; color: var(--metallic); font-size: 13px;">We collect your car and bring it back. Includes pickup and drop-off.</p>
+                  </div>
+                </label>
+              </div>
+
+              <div style="background: var(--panel); padding: 32px; border-radius: 16px; border: 1px solid var(--panel-border);">
+                <h3 style="margin: 0 0 16px; font-size: 18px; font-weight: 600;">Summary</h3>
+                <p id="bay-summary" style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">Fill in details above to see your booking summary.</p>
+                <div id="bay-total" style="margin: 12px 0 0; font-size: 24px; font-weight: 700; color: var(--accent);"></div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="pill-btn btn-primary" style="width: 100%; padding: 16px 32px; font-size: 15px; font-weight: 600;">Proceed to Checkout</button>
+
+              <p style="text-align: center; color: var(--metallic); font-size: 13px; margin: 0;">
+                We'll confirm your booking via email within 1 hour. Arrive 10 minutes early to complete check-in
+              </p>
+              <p id="bay-booking-status" style="text-align: center; color: var(--metallic); font-size: 13px; margin: 0;"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="benefits" class="section">
+        <div class="container">
+          <div class="section-header" style="text-align: center;">
+            <p class="eyebrow">Facility Benefits</p>
+            <h2>Premium Bay Experience</h2>
+          </div>
+
+          <div class="benefits-grid">
+            <div class="benefit-item">
+              <h3><i class="fa-regular fa-building" aria-hidden="true"></i> Modern Facility</h3>
+              <p>State-of-the-art bays with professional-grade equipment and technology</p>
+            </div>
+            <div class="benefit-item">
+              <h3><i class="fa-solid fa-mug-hot" aria-hidden="true"></i> Comfortable Waiting</h3>
+              <p>Air-conditioned waiting area with WiFi, coffee, and refreshments</p>
+            </div>
+            <div class="benefit-item">
+              <h3><i class="fa-solid fa-bolt" aria-hidden="true"></i> Quick Service</h3>
+              <p>Efficient service without compromising quality. Fast turnaround times</p>
+            </div>
+            <div class="benefit-item">
+              <h3><i class="fa-solid fa-users" aria-hidden="true"></i> Professional Team</h3>
+              <p>Trained specialists who deliver consistent, premium results</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="section booking-section">
+        <div class="booking-gradient"></div>
+        <div class="container booking-content">
+          <h2>Ready to Visit?</h2>
+          <p class="desc">Book your bay wash now and experience premium automotive care</p>
+          <div class="booking-btn-row">
+            <a href="#booking-form" class="pill-btn btn-primary">Complete Booking</a>
+            <a href="./index.html" class="pill-btn btn-outline">Back Home</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="footer" class="footer-section">
+        <div class="iridescent-wrap">
+          <canvas id="iridescent-canvas"></canvas>
+        </div>
+        <div class="container footer-content">
+          <div class="footer-grid">
+            <div class="footer-col wide">
+              <h3 class="footer-brand">INT216D</h3>
+              <p class="footer-blurb">Premium automotive care for the discerning vehicle owner.</p>
+              <div class="inline-links">
+                <a href="#" class="footer-link">Facebook</a>
+                <a href="#" class="footer-link">Instagram</a>
+                <a href="#" class="footer-link">Twitter</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Quick Links</h4>
+              <div class="footer-col-list">
+                <a href="./index.html" class="footer-text-link">Home</a>
+                <a href="./services.html" class="footer-text-link">Services</a>
+                <a href="./pricing.html" class="footer-text-link">Pricing</a>
+                <a href="./contact.html" class="footer-text-link">Contact</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Contact</h4>
+              <div class="footer-col-list">
+                <p class="footer-link" style="cursor: default; margin: 0;">+27 11 555 1234</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">info@int216d.co.za</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">Open 8AM - 8PM</p>
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p class="footer-copy">&copy; 2024 INT216D CarWash. All rights reserved.</p>
+            <div class="footer-bottom-links">
+              <a href="#" class="footer-text-link">Privacy Policy</a>
+              <a href="#" class="footer-text-link">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      (function() {
+        var token = localStorage.getItem('int216d:accessToken');
+        if (!token) return;
+        var API = localStorage.getItem('int216d:apiBase') || 'http://localhost:8080';
+        fetch(API + '/api/v1/clients/me', { headers: { 'Authorization': 'Bearer ' + token } })
+          .then(function(r) { return r.json(); })
+          .then(function(d) {
+            var p = d.data || {};
+            var form = document.getElementById('bay-booking-form');
+            if (!form) return;
+            var set = function(name, val) { var el = form.querySelector('[name="' + name + '"]'); if (el && val) el.value = val; };
+            set('fullName', (p.firstName || '') + ' ' + (p.lastName || ''));
+            set('phone', p.phone || '');
+            // Email from JWT payload
+            try {
+              var parts = token.split('.');
+              var raw = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+              var pad = raw + '='.repeat((4 - (raw.length % 4)) % 4);
+              var jwt = JSON.parse(atob(pad));
+              set('email', jwt.email || '');
+            } catch(_) {}
+          })
+          .catch(function() {});
+      })();
+    </script>
+    <script type="module" src="./script-pages.js"></script>
+  </body>
+</html>

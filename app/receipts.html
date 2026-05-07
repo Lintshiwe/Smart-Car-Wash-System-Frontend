@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Receipts - INT216D CarWash</title>
+<link rel="icon" type="image/png" href="./public/images/logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="./styles.css"/>
+<style>
+  .receipts-page { min-height:100vh; padding:120px 24px 60px; background:var(--obsidian); }
+  .receipts-container { max-width:700px; margin:0 auto; }
+  .receipts-header { margin-bottom:32px; }
+  .receipts-header h2 { font-family:'Instrument Serif',serif; font-size:28px; color:var(--ink); }
+  .receipts-header p { color:var(--metallic); font-size:14px; margin-top:4px; }
+  .receipt-card { background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:20px 24px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .receipt-card:hover { border-color:var(--accent); }
+  .receipt-info { flex:1; min-width:200px; }
+  .receipt-info .r-item { font-size:13px; font-weight:500; color:var(--ink); }
+  .receipt-info .r-meta { font-size:11px; color:var(--metallic); margin-top:4px; }
+  .receipt-info .r-amount { font-size:18px; font-weight:700; color:var(--accent); margin-top:2px; }
+  .receipt-actions { display:flex; gap:8px; }
+  .r-btn { padding:8px 16px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:none; font-family:Inter,sans-serif; transition:.15s; }
+  .r-btn-view { background:var(--accent); color:#000; }
+  .r-btn-view:hover { opacity:.85; }
+  .r-btn-down { background:transparent; border:1px solid var(--accent); color:var(--accent); }
+  .r-btn-down:hover { background:rgba(18,179,166,.1); }
+  .r-btn-del { background:transparent; border:1px solid var(--panel-border); color:var(--metallic); }
+  .r-btn-del:hover { border-color:#e74c3c; color:#e74c3c; }
+  .empty-state { text-align:center; padding:60px 20px; color:var(--metallic); }
+  .empty-state h3 { color:var(--ink); margin-bottom:8px; }
+
+  /* ── RECEIPT MODAL ── */
+  .receipt-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:9999; align-items:center; justify-content:center; }
+  .receipt-overlay.show { display:flex; }
+  .receipt-paper { width:380px; max-width:92vw; background:#fff; color:#1a1a1a; border-radius:4px; overflow:hidden; max-height:90vh; overflow-y:auto; }
+  .receipt-paper .rp-header { background:#111; color:var(--accent); padding:20px 24px; text-align:center; }
+  .receipt-paper .rp-header h3 { font-family:'Instrument Serif',serif; font-size:20px; margin:0; }
+  .receipt-paper .rp-header p { font-size:11px; margin:4px 0 0; opacity:.8; }
+  .receipt-paper .rp-body { padding:20px 24px; font-family:'Courier New',monospace; font-size:12px; line-height:1.7; }
+  .receipt-paper .rp-line { display:flex; justify-content:space-between; padding:2px 0; }
+  .receipt-paper .rp-dots { border-bottom:1px dotted #ccc; flex:1; margin:0 6px; }
+  .receipt-paper .rp-total { font-size:16px; font-weight:700; margin-top:8px; padding-top:8px; border-top:2px solid #333; }
+  .receipt-paper .rp-code { text-align:center; font-size:18px; font-weight:700; letter-spacing:3px; margin:12px 0; color:var(--accent); background:#f5f5f5; padding:8px; border-radius:4px; }
+  .receipt-paper .rp-footer { padding:16px 24px; text-align:center; font-size:11px; color:#888; background:#f9f9f9; }
+  .receipt-paper .rp-actions { display:flex; gap:8px; padding:12px 24px; justify-content:center; border-top:1px solid #eee; }
+  .receipt-paper .rp-btn { padding:8px 20px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:none; }
+  .rp-btn-print { background:#111; color:#fff; }
+  .rp-btn-close { background:#eee; color:#333; }
+
+  /* ── PRINT: receipt-sized ── */
+  @media print {
+    body * { visibility:hidden; }
+    .receipt-overlay, .receipt-overlay * { visibility:visible; }
+    .receipt-overlay { position:absolute; left:0; top:0; width:100%; background:#fff; display:block !important; }
+    .receipt-paper { width:80mm; max-width:80mm; margin:0 auto; box-shadow:none; border-radius:0; }
+    .rp-btn-print, .rp-btn-close, .rp-actions { display:none !important; }
+    @page { size:80mm auto; margin:2mm; }
+  }
+</style>
+</head>
+<body>
+<div class="site-shell">
+  <nav id="main-nav" class="nav-pill">
+    <a href="./index.html" class="brand">INT216D</a>
+    <button id="menu-toggle-btn" class="menu-toggle-btn" type="button" aria-expanded="false" aria-controls="main-nav-links" aria-label="Open menu">Menu</button>
+    <div class="nav-links" id="main-nav-links">
+      <a href="./index.html#services" class="nav-link">Services</a>
+      <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+      <a href="./index.html#addons" class="nav-link">Pricing</a>
+      <a href="./profile.html" class="nav-link">Profile</a>
+      <a href="./receipts.html" class="nav-link" style="color:var(--accent);">Receipts</a>
+    </div>
+    <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">Light</button>
+    <a href="./login.html" id="login-btn" class="pill-btn login-btn">Login</a>
+  </nav>
+
+  <div class="receipts-page">
+    <div class="receipts-container">
+      <div class="receipts-header">
+        <p class="auth-eyebrow">History</p>
+        <h2>My Receipts</h2>
+        <p>View and download your booking and membership receipts</p>
+      </div>
+      <div id="receipts-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RECEIPT VIEWER MODAL -->
+<div class="receipt-overlay" id="receipt-overlay">
+  <div class="receipt-paper" id="receipt-paper"></div>
+</div>
+
+<script>
+(function() {
+  var RECEIPTS_KEY = 'int216d:receipts';
+  var ACCESS_TOKEN_KEY = 'int216d:accessToken';
+
+  function getToken() { return localStorage.getItem(ACCESS_TOKEN_KEY); }
+
+  function getReceipts() {
+    try { return JSON.parse(localStorage.getItem(RECEIPTS_KEY) || '[]'); }
+    catch(_) { return []; }
+  }
+
+  function saveReceipts(receipts) {
+    localStorage.setItem(RECEIPTS_KEY, JSON.stringify(receipts));
+  }
+
+  function renderList() {
+    var receipts = getReceipts();
+    var list = document.getElementById('receipts-list');
+
+    if (!getToken()) {
+      list.innerHTML = '<div class="empty-state"><h3>Please Sign In</h3><p><a href="./login.html" style="color:var(--accent);">Login</a> to view your receipts.</p></div>';
+      return;
+    }
+
+    if (!receipts.length) {
+      list.innerHTML = '<div class="empty-state"><h3>No Receipts Yet</h3><p>Your booking and payment receipts will appear here.</p><a href="./book-bay-wash.html" class="r-btn r-btn-view" style="display:inline-block;margin-top:16px;text-decoration:none;">Book a Wash</a></div>';
+      return;
+    }
+
+    list.innerHTML = receipts.reverse().map(function(r,i) {
+      var idx = receipts.length - 1 - i;
+      return '<div class="receipt-card">' +
+        '<div class="receipt-info">' +
+          '<div class="r-item">' + r.itemName + '</div>' +
+          '<div class="r-meta">' + r.date + ' · ' + (r.type === 'membership' ? 'Membership' : 'Booking') + '</div>' +
+          '<div class="r-meta">Ref: ' + r.paymentRef + '</div>' +
+          '<div class="r-amount">R' + (r.finalPrice || r.price).toFixed(2) + (r.isFree ? ' <span style="font-size:12px;color:var(--accent);">FREE</span>' : '') + '</div>' +
+        '</div>' +
+        '<div class="receipt-actions">' +
+          '<button class="r-btn r-btn-view" onclick="viewReceipt(' + idx + ')">View</button>' +
+          '<button class="r-btn r-btn-down" onclick="downloadReceipt(' + idx + ')">PDF</button>' +
+          '<button class="r-btn r-btn-del" onclick="deleteReceipt(' + idx + ')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.viewReceipt = function(idx) {
+    var receipts = getReceipts();
+    var r = receipts[idx];
+    if (!r) return;
+
+    var overlay = document.getElementById('receipt-overlay');
+    var paper = document.getElementById('receipt-paper');
+
+    paper.innerHTML =
+      '<div class="rp-header">' +
+        '<img src="./public/images/logo.png" alt="INT216D" style="width:50px;height:50px;object-fit:contain;margin-bottom:6px;"/>' +
+        '<h3>INT216D Car Wash</h3>' +
+        '<p>Payment Receipt</p>' +
+      '</div>' +
+      '<div class="rp-body">' +
+        '<div class="rp-line"><span>Date</span><span>' + r.date + '</span></div>' +
+        '<div class="rp-line"><span>Customer</span><span>' + r.fullName + '</span></div>' +
+        '<div class="rp-line"><span>Email</span><span>' + r.email + '</span></div>' +
+        (r.phone ? '<div class="rp-line"><span>Phone</span><span>' + r.phone + '</span></div>' : '') +
+        (r.location ? '<div class="rp-line"><span>Location</span><span>' + r.location + '</span></div>' : '') +
+        (r.cardLast4 ? '<div class="rp-line"><span>Card</span><span>•••• ' + r.cardLast4 + '</span></div>' : '') +
+        '<div class="rp-line"><span></span><span class="rp-dots"></span><span></span></div>' +
+        '<div class="rp-line"><span>Item</span><span>' + r.itemName + '</span></div>' +
+        (r.originalPrice && r.originalPrice > r.finalPrice ? '<div class="rp-line"><span>Subtotal</span><span>R' + r.originalPrice.toFixed(2) + '</span></div>' : '') +
+        (r.isFree ? '<div class="rp-line"><span style="color:#12b3a6;">VIP Free Wash</span><span style="color:#12b3a6;">-FREE</span></div>' : '') +
+        (r.discountPercent > 0 && !r.isFree ? '<div class="rp-line"><span style="color:#12b3a6;">Discount (' + r.discountPercent + '%)</span><span style="color:#12b3a6;">-R' + ((r.originalPrice||r.price) - (r.finalPrice||r.price)).toFixed(2) + '</span></div>' : '') +
+        '<div class="rp-line rp-total"><span>TOTAL</span><span>R' + (r.finalPrice || r.price).toFixed(2) + '</span></div>' +
+        '<div class="rp-line"><span>Status</span><span style="color:green;">' + (r.isFree ? 'FREE WASH' : 'PAID') + '</span></div>' +
+        '<div class="rp-line"><span>Ref</span><span>' + r.paymentRef + '</span></div>' +
+        (r.confirmCode && r.confirmCode !== 'N/A' ? '<div class="rp-code">' + r.confirmCode + '</div>' : '') +
+      '</div>' +
+      '<div class="rp-footer">Thank you for your business!</div>' +
+      '<div class="rp-actions">' +
+        '<button class="rp-btn rp-btn-print" onclick="window.print()">🖨 Print / Save PDF</button>' +
+        '<button class="rp-btn rp-btn-close" onclick="closeReceipt()">Close</button>' +
+      '</div>';
+
+    overlay.classList.add('show');
+  };
+
+  window.downloadReceipt = function(idx) {
+    viewReceipt(idx);
+    setTimeout(function() { window.print(); }, 300);
+  };
+
+  window.closeReceipt = function() {
+    document.getElementById('receipt-overlay').classList.remove('show');
+  };
+
+  window.deleteReceipt = function(idx) {
+    if (!confirm('Delete this receipt?')) return;
+    var receipts = getReceipts();
+    receipts.splice(idx, 1);
+    saveReceipts(receipts);
+    renderList();
+  };
+
+  // Close modal on overlay click
+  document.getElementById('receipt-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeReceipt();
+  });
+
+  // ── LOGIN BUTTON ──
+  (function() {
+    var btn = document.getElementById('login-btn');
+    var token = getToken();
+    if (!btn) return;
+    if (token) {
+      btn.textContent = 'Logout';
+      btn.href = '#';
+      btn.onclick = function(e) {
+        e.preventDefault();
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+        localStorage.removeItem('int216d:userRole');
+        localStorage.removeItem('int216d:userId');
+        window.location.href = './index.html';
+      };
+    }
+  })();
+
+  // ── THEME ──
+  (function() {
+    var b = document.getElementById('theme-toggle-btn');
+    var html = document.documentElement;
+    var t = localStorage.getItem('int216d-theme') || 'dark';
+    html.setAttribute('data-theme', t);
+    if (b) b.textContent = t === 'dark' ? 'Dark' : 'Light';
+    if (b) b.addEventListener('click', function() {
+      var cur = html.getAttribute('data-theme') || 'dark';
+      var next = cur === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('int216d-theme', next);
+      b.textContent = next === 'dark' ? 'Dark' : 'Light';
+    });
+  })();
+
+  // ── MOBILE MENU ──
+  (function() {
+    var t = document.getElementById('menu-toggle-btn'), n = document.getElementById('main-nav'), l = document.getElementById('main-nav-links');
+    if (!t || !n) return;
+    t.addEventListener('click', function() {
+      var o = n.classList.toggle('menu-open');
+      t.setAttribute('aria-expanded', o ? 'true' : 'false');
+      t.textContent = o ? 'Close' : 'Menu';
+    });
+    if (l) l.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { if (window.innerWidth <= 768) { n.classList.remove('menu-open'); } });
+    });
+  })();
+
+  renderList();
+})();
+</script>
+</body>
+</html>

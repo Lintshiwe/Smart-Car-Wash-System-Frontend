@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - INT216D CarWash</title>
+    <link rel="icon" type="image/png" href="./public/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWix+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8U8U19+9F3R8v+0I4lQ5f6LQxK/5h2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button
+          id="menu-toggle-btn"
+          class="menu-toggle-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="main-nav-links"
+          aria-label="Open menu"
+        >
+          Menu
+        </button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./index.html#services" class="nav-link">Services</a>
+          <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+          <a href="./index.html#addons" class="nav-link">Pricing</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">
+          Light
+        </button>
+        <a href="./login.html" id="login-btn" class="pill-btn login-btn">Login</a>
+      </nav>
+
+      <section id="hero" class="hero-section">
+        <div id="hero-three" class="hero-bg"></div>
+        <div class="hero-content">
+          <div id="hero-title" class="hero-title">
+            <div class="line-wrap"><h1 class="hero-line">Get in</h1></div>
+            <div class="line-wrap"><h1 class="hero-line accent">Touch</h1></div>
+            <div class="line-wrap"><h1 class="hero-line">With Us</h1></div>
+          </div>
+          <p id="hero-subtitle" class="hero-subtitle">We'd love to hear from you. Reach out anytime</p>
+        </div>
+      </section>
+
+      <section id="contact-info" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Contact Information</p>
+            <h2>Multiple Ways to Reach Us</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; margin-bottom: 64px;">
+            <!-- Phone -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <div style="font-size: 32px; margin-bottom: 16px;"><i class="fa-solid fa-phone" aria-hidden="true"></i></div>
+              <h3 style="margin: 0 0 8px; font-size: 18px; font-weight: 500;">Phone</h3>
+              <p style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                <a href="tel:+27115551234" style="color: var(--accent); text-decoration: none;">+27 11 555 1234</a>
+              </p>
+              <p style="margin: 8px 0 0; color: var(--metallic); font-size: 12px;">Mon-Sun: 8AM - 6PM</p>
+            </div>
+
+            <!-- Email -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <div style="font-size: 32px; margin-bottom: 16px;"><i class="fa-solid fa-envelope" aria-hidden="true"></i></div>
+              <h3 style="margin: 0 0 8px; font-size: 18px; font-weight: 500;">Email</h3>
+              <p style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                <a href="mailto:info@int216d.co.za" style="color: var(--accent); text-decoration: none;">info@int216d.co.za</a>
+              </p>
+              <p style="margin: 8px 0 0; color: var(--metallic); font-size: 12px;">Response within 24 hours</p>
+            </div>
+
+            <!-- Location -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <div style="font-size: 32px; margin-bottom: 16px;"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
+              <h3 style="margin: 0 0 8px; font-size: 18px; font-weight: 500;">Location</h3>
+              <p style="margin: 0; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                123 Main Street<br/>Johannesburg, 2196, SA
+              </p>
+              <p style="margin: 8px 0 0; color: var(--metallic); font-size: 12px;">Get directions</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact-form" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Send us a Message</p>
+            <h2>We're Here to Help</h2>
+          </div>
+
+          <div style="max-width: 700px; margin: 0 auto;">
+            <form id="contact-form" style="display: grid; gap: 24px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Name</label>
+                  <input type="text" name="name" placeholder="Your name" style="width: 100%; padding: 12px 16px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                </div>
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Email</label>
+                  <input type="email" name="email" placeholder="your@email.com" style="width: 100%; padding: 12px 16px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+                </div>
+              </div>
+
+              <div>
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Phone</label>
+                <input type="tel" name="phone" placeholder="+27 11 555 1234" style="width: 100%; padding: 12px 16px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" />
+              </div>
+
+              <div>
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Subject</label>
+                <input type="text" name="subject" placeholder="What is this about?" style="width: 100%; padding: 12px 16px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif;" required />
+              </div>
+
+              <div>
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500;">Message</label>
+                <textarea name="message" placeholder="Your message here..." rows="6" style="width: 100%; padding: 12px 16px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--ink); font-size: 14px; font-family: Inter, sans-serif; resize: vertical;"></textarea>
+              </div>
+
+              <button type="submit" class="pill-btn btn-primary" style="width: 100%;">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="locations" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Visit Us</p>
+            <h2>Our Locations</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px;">
+            <!-- Location 1 -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Johannesburg Location</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">
+                123 Main Street<br/>Johannesburg, 2196, SA
+              </p>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">
+                <strong>Hours:</strong><br/>
+                Mon-Fri: 8AM - 8PM<br/>
+                Sat-Sun: 9AM - 6PM
+              </p>
+              <a href="#" class="pill-btn" style="display: inline-block; padding: 8px 20px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Get Directions</a>
+            </div>
+
+            <!-- Location 2 -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Cape Town Location</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">
+                456 Waterfront Road<br/>Cape Town, 8002, SA
+              </p>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">
+                <strong>Hours:</strong><br/>
+                Mon-Fri: 7AM - 7PM<br/>
+                Sat-Sun: 8AM - 5PM
+              </p>
+              <a href="#" class="pill-btn" style="display: inline-block; padding: 8px 20px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Get Directions</a>
+            </div>
+
+            <!-- Location 3 -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Mobile Service</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">
+                We come to you!<br/>Service available in Gauteng & Western Cape
+              </p>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">
+                <strong>Hours:</strong><br/>
+                Mon-Sun: 8AM - 6PM<br/>
+                Book in advance
+              </p>
+              <a href="./book-bay-wash.html" class="pill-btn" style="display: inline-block; padding: 8px 20px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="section booking-section">
+        <div class="booking-gradient"></div>
+        <div class="container booking-content">
+          <h2>Questions? We Have Answers</h2>
+          <p class="desc">Our team is ready to help with any inquiries</p>
+          <div class="booking-btn-row">
+            <a href="#contact-form" class="pill-btn btn-primary">Contact Us</a>
+            <a href="./book-bay-wash.html" class="pill-btn btn-outline">Book a Service</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="footer" class="footer-section">
+        <div class="iridescent-wrap">
+          <canvas id="iridescent-canvas"></canvas>
+        </div>
+        <div class="container footer-content">
+          <div class="footer-grid">
+            <div class="footer-col wide">
+              <h3 class="footer-brand">INT216D</h3>
+              <p class="footer-blurb">Premium automotive care for the discerning vehicle owner.</p>
+              <div class="inline-links">
+                <a href="#" class="footer-link">Facebook</a>
+                <a href="#" class="footer-link">Instagram</a>
+                <a href="#" class="footer-link">Twitter</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Quick Links</h4>
+              <div class="footer-col-list">
+                <a href="./index.html" class="footer-text-link">Home</a>
+                <a href="./services.html" class="footer-text-link">Services</a>
+                <a href="./membership.html" class="footer-text-link">Membership</a>
+                <a href="./contact.html" class="footer-text-link is-active">Contact</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Contact</h4>
+              <div class="footer-col-list">
+                <p class="footer-link" style="cursor: default; margin: 0;">+27 11 555 1234</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">info@int216d.co.za</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">Open 8AM - 6PM</p>
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p class="footer-copy">&copy; 2024 INT216D CarWash. All rights reserved.</p>
+            <div class="footer-bottom-links">
+              <a href="#" class="footer-text-link">Privacy Policy</a>
+              <a href="#" class="footer-text-link">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./script-pages.js"></script>
+  </body>
+</html>

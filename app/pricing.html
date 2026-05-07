@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing - INT216D CarWash</title>
+    <link rel="icon" type="image/png" href="./public/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWix+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8U8U19+9F3R8v+0I4lQ5f6LQxK/5h2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav id="main-nav" class="nav-pill">
+        <a href="./index.html" class="brand">INT216D</a>
+        <button
+          id="menu-toggle-btn"
+          class="menu-toggle-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="main-nav-links"
+          aria-label="Open menu"
+        >
+          Menu
+        </button>
+        <div class="nav-links" id="main-nav-links">
+          <a href="./index.html#services" class="nav-link">Services</a>
+          <a href="./membership.html" class="nav-link nav-featured">Membership</a>
+          <a href="./pricing.html" class="nav-link">Pricing</a>
+        </div>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle light mode">
+          Light
+        </button>
+        <a href="./login.html" id="login-btn" class="pill-btn login-btn">Login</a>
+      </nav>
+
+      <section id="hero" class="hero-section">
+        <div id="hero-three" class="hero-bg"></div>
+        <div class="hero-content">
+          <div id="hero-title" class="hero-title">
+            <div class="line-wrap"><h1 class="hero-line">Transparent</h1></div>
+            <div class="line-wrap"><h1 class="hero-line accent">Pricing</h1></div>
+            <div class="line-wrap"><h1 class="hero-line">No Surprises</h1></div>
+          </div>
+          <p id="hero-subtitle" class="hero-subtitle">Quality service at fair prices</p>
+        </div>
+      </section>
+
+      <section id="standard-services" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Services</p>
+            <h2>Standard Service Pricing</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; max-width: 1200px;">
+            <!-- Basic Wash -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Basic Wash</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">Exterior wash & dry</p>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--accent); margin-bottom: 16px; font-weight: 500;">R399</div>
+              <ul style="margin: 0 0 24px; padding-left: 20px; color: var(--metallic); font-size: 13px; text-align: left; line-height: 1.8;">
+                <li>Exterior wash</li>
+                <li>Premium soaps</li>
+                <li>Hand dry</li>
+                <li>15-20 min</li>
+              </ul>
+              <a href="./book-bay-wash.html" class="pill-btn" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Book Now</a>
+            </div>
+
+            <!-- Deluxe Wash -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Deluxe Wash</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">Wash + interior vacuum</p>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--accent); margin-bottom: 16px; font-weight: 500;">R649</div>
+              <ul style="margin: 0 0 24px; padding-left: 20px; color: var(--metallic); font-size: 13px; text-align: left; line-height: 1.8;">
+                <li>Exterior wash</li>
+                <li>Interior vacuum</li>
+                <li>Glass cleaning</li>
+                <li>25-30 min</li>
+              </ul>
+              <a href="./book-bay-wash.html" class="pill-btn" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Book Now</a>
+            </div>
+
+            <!-- Premium Wash -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <div style="background: var(--accent); color: var(--surface-strong-text); padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 600; display: inline-block; margin-bottom: 12px;">MOST POPULAR</div>
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Premium Wash</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">Complete interior detail</p>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--accent); margin-bottom: 16px; font-weight: 500;">R999</div>
+              <ul style="margin: 0 0 24px; padding-left: 20px; color: var(--metallic); font-size: 13px; text-align: left; line-height: 1.8;">
+                <li>Exterior wash</li>
+                <li>Interior detail</li>
+                <li>Glass & trim</li>
+                <li>35-45 min</li>
+              </ul>
+              <a href="./book-bay-wash.html" class="pill-btn" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Book Now</a>
+            </div>
+
+            <!-- Wax & Polish -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Wax & Polish</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">Protective shine</p>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--accent); margin-bottom: 16px; font-weight: 500;">R749</div>
+              <ul style="margin: 0 0 24px; padding-left: 20px; color: var(--metallic); font-size: 13px; text-align: left; line-height: 1.8;">
+                <li>Machine polish</li>
+                <li>Premium wax</li>
+                <li>Paint protection</li>
+                <li>30 min</li>
+              </ul>
+              <a href="./book-bay-wash.html" class="pill-btn" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Book Now</a>
+            </div>
+
+            <!-- Ceramic Coating -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Ceramic Coating</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">Maximum protection</p>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--accent); margin-bottom: 16px; font-weight: 500;">R2,499</div>
+              <ul style="margin: 0 0 24px; padding-left: 20px; color: var(--metallic); font-size: 13px; text-align: left; line-height: 1.8;">
+                <li>Professional coating</li>
+                <li>UV protection</li>
+                <li>2-year warranty</li>
+                <li>2-3 hours</li>
+              </ul>
+              <a href="./book-bay-wash.html" class="pill-btn" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Book Now</a>
+            </div>
+
+            <!-- Mobile Service -->
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px; text-align: center;">
+              <h3 style="margin: 0 0 12px; font-size: 18px; font-weight: 500;">Mobile Service</h3>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px;">We come to you</p>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--accent); margin-bottom: 16px; font-weight: 500;">+R399</div>
+              <ul style="margin: 0 0 24px; padding-left: 20px; color: var(--metallic); font-size: 13px; text-align: left; line-height: 1.8;">
+                <li>On-site service</li>
+                <li>Same packages</li>
+                <li>At home or work</li>
+                <li>Book in advance</li>
+              </ul>
+              <a href="./book-bay-wash.html" class="pill-btn" style="display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--surface-strong-text); font-size: 13px; font-weight: 500; border-radius: 100px; text-decoration: none;">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="add-ons" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Extras</p>
+            <h2>Optional Add-ons</h2>
+          </div>
+
+          <div style="max-width: 900px; margin: 0 auto; display: grid; gap: 16px;">
+            <div style="background: var(--panel); padding: 20px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="margin: 0 0 4px; font-size: 15px; font-weight: 500;">Engine Bay Cleaning</h4>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Professional engine detail</p>
+              </div>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--accent); font-weight: 500;">R599</div>
+            </div>
+
+            <div style="background: var(--panel); padding: 20px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="margin: 0 0 4px; font-size: 15px; font-weight: 500;">Tire Shine</h4>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Enhanced tire appearance</p>
+              </div>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--accent); font-weight: 500;">R249</div>
+            </div>
+
+            <div style="background: var(--panel); padding: 20px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="margin: 0 0 4px; font-size: 15px; font-weight: 500;">Air Freshener Premium</h4>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Long-lasting scent</p>
+              </div>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--accent); font-weight: 500;">R199</div>
+            </div>
+
+            <div style="background: var(--panel); padding: 20px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="margin: 0 0 4px; font-size: 15px; font-weight: 500;">Leather Conditioning</h4>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Leather seat care</p>
+              </div>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--accent); font-weight: 500;">R449</div>
+            </div>
+
+            <div style="background: var(--panel); padding: 20px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="margin: 0 0 4px; font-size: 15px; font-weight: 500;">Stain Removal</h4>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Interior spot treatment</p>
+              </div>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--accent); font-weight: 500;">R349</div>
+            </div>
+
+            <div style="background: var(--panel); padding: 20px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="margin: 0 0 4px; font-size: 15px; font-weight: 500;">Odor Elimination</h4>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Complete odor removal</p>
+              </div>
+              <div style="font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--accent); font-weight: 500;">R499</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="memberships" class="section membership-section">
+        <canvas id="beam-canvas" class="beam-canvas"></canvas>
+        <div class="container membership-content">
+          <div class="section-header" style="text-align: center; margin-bottom: 48px;">
+            <p class="eyebrow">Save More</p>
+            <h2>Membership Plans</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; max-width: 1000px;">
+            <!-- Basic Plan -->
+            <div class="membership-card">
+              <h3 class="card-title">Basic</h3>
+              <p class="card-desc">Starting plan</p>
+              <div class="price-row">
+                <div class="price-main">R499</div>
+                <div class="price-month">/month</div>
+              </div>
+              <ul class="feature-list">
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>4 washes/month</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Save $4/wash</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>10% add-on discount</span>
+                </li>
+              </ul>
+              <a href="./membership.html" class="pill-btn join-btn">Learn More</a>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="membership-card" style="border: 1px solid var(--accent);">
+              <p style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--surface-strong-text); padding: 4px 16px; border-radius: 100px; font-size: 12px; font-weight: 600;">BEST VALUE</p>
+              <h3 class="card-title">Pro</h3>
+              <p class="card-desc">Most popular</p>
+              <div class="price-row">
+                <div class="price-main">R999</div>
+                <div class="price-month">/month</div>
+              </div>
+              <ul class="feature-list">
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Unlimited washes</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Priority booking</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>20% add-on discount</span>
+                </li>
+              </ul>
+              <a href="./membership.html" class="pill-btn join-btn">Learn More</a>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="membership-card">
+              <h3 class="card-title">Premium</h3>
+              <p class="card-desc">Ultimate care</p>
+              <div class="price-row">
+                <div class="price-main">R1,599</div>
+                <div class="price-month">/month</div>
+              </div>
+              <ul class="feature-list">
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Everything Pro +</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>Monthly detail</span>
+                </li>
+                <li class="feature-item">
+                  <div class="feature-dot"></div>
+                  <span>30% add-on discount</span>
+                </li>
+              </ul>
+              <a href="./membership.html" class="pill-btn join-btn">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="savings" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Smart Choice</p>
+            <h2>How Much You Save</h2>
+          </div>
+
+          <div style="max-width: 900px; margin: 0 auto; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <th style="text-align: left; padding: 16px; font-weight: 500;">Monthly Usage</th>
+                  <th style="text-align: center; padding: 16px; font-weight: 500;">Pay Per Wash</th>
+                  <th style="text-align: center; padding: 16px; font-weight: 500;">Basic Plan</th>
+                  <th style="text-align: center; padding: 16px; font-weight: 500;">Pro Plan</th>
+                  <th style="text-align: center; padding: 16px; font-weight: 500;">Premium Plan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <td style="padding: 16px;">2 washes</td>
+                  <td style="text-align: center; padding: 16px;">R300</td>
+                  <td style="text-align: center; padding: 16px; color: var(--metallic);">R499</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <td style="padding: 16px;">4 washes</td>
+                  <td style="text-align: center; padding: 16px;">R1990</td>
+                  <td style="text-align: center; padding: 16px; color: var(--accent); font-weight: 500;">R499 ✓</td>
+                  <td style="text-align: center; padding: 16px; color: var(--metallic);">R999</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line-divider);">
+                  <td style="padding: 16px;">8 washes</td>
+                  <td style="text-align: center; padding: 16px;">R3490</td>
+                  <td style="text-align: center; padding: 16px;">-</td>
+                  <td style="text-align: center; padding: 16px; color: var(--accent); font-weight: 500;">R999 ✓</td>
+                  <td style="text-align: center; padding: 16px; color: var(--metallic);">R1,599</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="videos" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Learn More</p>
+            <h2>Video Guides & Tutorials</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1100px;">
+            <div style="background: var(--panel); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+              <div style="aspect-ratio: 16/9; background: var(--off-black); display: flex; align-items: center; justify-content: center; font-size: 48px;"><i class="fa-solid fa-circle-play" aria-hidden="true"></i></div>
+              <div style="padding: 24px;">
+                <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 500;">Understanding Service Pricing</h3>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">See what's included in each service level</p>
+              </div>
+            </div>
+
+            <div style="background: var(--panel); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+              <div style="aspect-ratio: 16/9; background: var(--off-black); display: flex; align-items: center; justify-content: center; font-size: 48px;"><i class="fa-solid fa-circle-play" aria-hidden="true"></i></div>
+              <div style="padding: 24px;">
+                <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 500;">Membership Benefits</h3>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Learn how to maximize your membership savings</p>
+              </div>
+            </div>
+
+            <div style="background: var(--panel); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+              <div style="aspect-ratio: 16/9; background: var(--off-black); display: flex; align-items: center; justify-content: center; font-size: 48px;"><i class="fa-solid fa-circle-play" aria-hidden="true"></i></div>
+              <div style="padding: 24px;">
+                <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 500;">Add-ons Worth It?</h3>
+                <p style="margin: 0; color: var(--metallic); font-size: 13px;">Expert advice on which add-ons provide best value</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" class="section" style="background: linear-gradient(180deg, rgba(18, 179, 166, 0.01) 0%, transparent 100%);">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow">Value Stories</p>
+            <h2>Why Customers Love Our Pricing</h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1100px;">
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <div style="display: flex; gap: 4px; margin-bottom: 16px;">
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+              </div>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                "Transparent pricing with no hidden fees. I know exactly what I'm paying for and it's fair value."
+              </p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500;">Lintshiwe Ntoampi</p>
+              <p style="margin: 4px 0 0; color: var(--metallic); font-size: 12px;">VIP Member</p>
+            </div>
+
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <div style="display: flex; gap: 4px; margin-bottom: 16px;">
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+              </div>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                "The ceramic coating was expensive but saved me money compared to regular waxing. Best investment!"
+              </p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500;">Neo Shai</p>
+              <p style="margin: 4px 0 0; color: var(--metallic); font-size: 12px;">Premium Member</p>
+            </div>
+
+            <div style="background: var(--panel); padding: 32px; border-radius: 12px;">
+              <div style="display: flex; gap: 4px; margin-bottom: 16px;">
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                <span style="color: var(--accent);"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+              </div>
+              <p style="margin: 0 0 16px; color: var(--metallic); font-size: 14px; line-height: 1.6;">
+                "Basic plan pricing is unbeatable for occasional washes. Quality service without breaking the bank."
+              </p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500;">Linenta Sekgota</p>
+              <p style="margin: 4px 0 0; color: var(--metallic); font-size: 12px;">Standard Member</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="section booking-section">
+        <div class="booking-gradient"></div>
+        <div class="container booking-content">
+          <h2>Ready to Book?</h2>
+          <p class="desc">Choose your perfect service or membership plan</p>
+          <div class="booking-btn-row">
+            <a href="./book-bay-wash.html" class="pill-btn btn-primary">Book a Service</a>
+            <a href="./membership.html" class="pill-btn btn-outline">View Membership</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="footer" class="footer-section">
+        <div class="iridescent-wrap">
+          <canvas id="iridescent-canvas"></canvas>
+        </div>
+        <div class="container footer-content">
+          <div class="footer-grid">
+            <div class="footer-col wide">
+              <h3 class="footer-brand">INT216D</h3>
+              <p class="footer-blurb">Premium automotive care for the discerning vehicle owner.</p>
+              <div class="inline-links">
+                <a href="#" class="footer-link">Facebook</a>
+                <a href="#" class="footer-link">Instagram</a>
+                <a href="#" class="footer-link">Twitter</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Quick Links</h4>
+              <div class="footer-col-list">
+                <a href="./index.html" class="footer-text-link">Home</a>
+                <a href="./services.html" class="footer-text-link">Services</a>
+                <a href="./pricing.html" class="footer-text-link is-active">Pricing</a>
+                <a href="./membership.html" class="footer-text-link">Membership</a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4 class="footer-col-title">Contact</h4>
+              <div class="footer-col-list">
+                <p class="footer-link" style="cursor: default; margin: 0;">+27 11 555 1234</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">info@int216d.co.za</p>
+                <p class="footer-link" style="cursor: default; margin: 0;">Open 8AM - 6PM</p>
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p class="footer-copy">&copy; 2024 INT216D CarWash. All rights reserved.</p>
+            <div class="footer-bottom-links">
+              <a href="#" class="footer-text-link">Privacy Policy</a>
+              <a href="#" class="footer-text-link">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./script-pages.js"></script>
+  </body>
+</html>
