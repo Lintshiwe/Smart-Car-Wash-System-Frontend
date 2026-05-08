@@ -800,17 +800,29 @@ if (contactForm) {
     e.preventDefault();
     const btn = contactForm.querySelector('button[type="submit"]');
     const originalText = btn.textContent;
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-
+    
     const formData = new FormData(contactForm);
     const body = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      subject: formData.get('subject'),
-      message: formData.get('message')
+      name: formData.get('name')?.trim(),
+      email: formData.get('email')?.trim(),
+      phone: formData.get('phone')?.trim(),
+      subject: formData.get('subject')?.trim(),
+      message: formData.get('message')?.trim()
     };
+    
+    if (!body.name || !body.email || !body.message) {
+      alert('Please fill in all required fields (Name, Email, Message).');
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(body.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
 
     try {
       const response = await fetch(`${API_BASE}/api/v1/contact`, {
