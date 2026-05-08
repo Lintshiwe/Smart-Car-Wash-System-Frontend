@@ -796,6 +796,11 @@ document.querySelectorAll('.footer-copy').forEach(el => {
 // Contact form handler
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
+  const statusDiv = document.createElement('div');
+  statusDiv.id = 'contact-status';
+  statusDiv.style.cssText = 'margin-top: 1rem; padding: 0.75rem; border-radius: 0.375rem; display: none;';
+  contactForm.appendChild(statusDiv);
+  
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = contactForm.querySelector('button[type="submit"]');
@@ -810,19 +815,25 @@ if (contactForm) {
       message: formData.get('message')?.trim()
     };
     
+    statusDiv.style.display = 'none';
+    
     if (!body.name || !body.email || !body.message) {
-      alert('Please fill in all required fields (Name, Email, Message).');
+      statusDiv.textContent = 'Please fill in all required fields (Name, Email, Message).';
+      statusDiv.style.cssText += 'background-color: #fee2e2; color: #991b1b; display: block;';
       return;
     }
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(body.email)) {
-      alert('Please enter a valid email address.');
+      statusDiv.textContent = 'Please enter a valid email address.';
+      statusDiv.style.cssText += 'background-color: #fee2e2; color: #991b1b; display: block;';
       return;
     }
     
     btn.textContent = 'Sending...';
     btn.disabled = true;
+    statusDiv.textContent = 'Sending your message...';
+    statusDiv.style.cssText += 'background-color: #dbeafe; color: #1e40af; display: block;';
 
     try {
       const response = await fetch(`${API_BASE}/api/v1/contact`, {
@@ -831,13 +842,16 @@ if (contactForm) {
         body: JSON.stringify(body)
       });
       if (response.ok) {
-        alert('Message sent successfully! We will get back to you soon.');
+        statusDiv.textContent = 'Message sent successfully! We will get back to you soon.';
+        statusDiv.style.cssText = 'margin-top: 1rem; padding: 0.75rem; border-radius: 0.375rem; background-color: #dcfce7; color: #166534; display: block;';
         contactForm.reset();
       } else {
-        alert('Failed to send message. Please try again later.');
+        statusDiv.textContent = 'Failed to send message. Please try again later.';
+        statusDiv.style.cssText += 'background-color: #fee2e2; color: #991b1b; display: block;';
       }
     } catch {
-      alert('Network error. Please check your connection and try again.');
+      statusDiv.textContent = 'Network error. Please check your connection and try again.';
+      statusDiv.style.cssText += 'background-color: #fee2e2; color: #991b1b; display: block;';
     } finally {
       btn.textContent = originalText;
       btn.disabled = false;
