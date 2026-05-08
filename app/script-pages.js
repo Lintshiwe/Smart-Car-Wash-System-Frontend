@@ -676,31 +676,31 @@ function bindBookingForm(formId, statusId, isMobile) {
     var time = data.get('preferredTime') || '10:00';
     var location = data.get('location') || (isMobile ? 'Mobile Service' : 'Bay Service');
 
-    var prices = {
-      'BASIC_WASH': 399,
-      'DELUXE_WASH': 649,
-      'PREMIUM_WASH': 999,
-      'MOBILE_WASH': 499,
-      'WAX_POLISH': 299,
-      'CERAMIC_COAT': 1200
-    };
-    var servicePrice = prices[service] || 399;
+    // Fetch prices from catalogue API
+    var servicePrice = 399;
     var optionPrice = serviceOption === 'collection' ? 150 : 0;
+    try {
+      var catalogueServices = await apiRequest('/api/v1/catalogue/services?activeOnly=true');
+      if (Array.isArray(catalogueServices)) {
+        var found = catalogueServices.find(function(s) { return s.code === service; });
+        if (found) servicePrice = Number(found.basePrice) || 399;
+      }
+    } catch(e) {
+      var prices = {
+        'BASIC_WASH': 99,
+        'DELUXE_WASH': 199,
+        'PREMIUM_WASH': 349,
+        'MOBILE_WASH': 449,
+        'WAX_POLISH': 499,
+        'CERAMIC_COAT': 1499
+      };
+      servicePrice = prices[service] || 399;
+    }
     var total = servicePrice + optionPrice;
-
-    // Map frontend service code to backend expected format: BAY_BASIC, MOBILE_PREMIUM, etc.
-    var serviceCodeMap = {
-      'BASIC_WASH': 'BASIC',
-      'DELUXE_WASH': 'DELUXE',
-      'PREMIUM_WASH': 'PREMIUM',
-      'MOBILE_WASH': 'BASIC'
-    };
-    var serviceLevel = serviceCodeMap[service] || 'BASIC';
-    var packageCode = (isMobile ? 'MOBILE_' : 'BAY_') + serviceLevel;
 
     var bookingData = {
       serviceType: isMobile ? 'MOBILE' : 'BAY',
-      packageCode: packageCode,
+      packageCode: service,
       fullName: data.get('fullName') || 'Customer',
       email: data.get('email') || 'customer@test.com',
       phone: data.get('phone') || '0820000000',

@@ -284,7 +284,7 @@
     <script>
       var API_BASE = localStorage.getItem('int216d:apiBase') || 'http://localhost:8080';
       var AK = 'int216d:accessToken', RK = 'int216d:userRole', UK = 'int216d:userId';
-      var DASHBOARD_API = '/api/dashboard/admin';
+      var DASHBOARD_API = '/api/v1/admin';
 
       function getToken() { return localStorage.getItem(AK); }
       function getRole() { return localStorage.getItem(RK); }
@@ -642,10 +642,9 @@
         if (!confirm('Permanently DELETE user ' + email + '?\n\nThis will remove ALL data (profile, memberships, bookings, payments).')) return;
         setStatus('Deleting user...', 'info');
         try {
-          var resp = await fetch(API_BASE + '/api/dashboard/sql/delete-user', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: userId })
+          var resp = await fetch(API_BASE + '/api/v1/admin/users/' + userId, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
           });
           var data = await resp.json();
           if (!resp.ok) throw new Error(data.error || 'Failed');
